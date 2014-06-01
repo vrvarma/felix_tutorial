@@ -1,0 +1,23 @@
+
+
+jar{
+
+	manifest {
+		// the manifest of the default jar is of type OsgiManifest
+		name = 'English dictionary'
+		description='A bundle that registers an English dictionary service'
+		vendor='Apache Felix'
+		version= '1.0.0'
+		instruction 'Bundle-Activator','tutorial.example2.service.Activator'
+		instruction 'Import-Package','org.osgi.framework'
+		instruction 'Export-Package','tutorial.example2.service'
+		//
+		//			instruction 'Private-Package',
+		//					'org.mycomp.package1',
+		//					'org.mycomp.package2'
+		//			instruction 'Bundle-Vendor', 'Apache Felix'
+		//			instruction 'Bundle-Description', 'Platform2: Metrics 2 Measures Framework'
+		//			instruction 'Bundle-DocURL', 'http://www.mycompany.com'
+
+	}
+}
