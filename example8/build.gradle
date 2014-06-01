@@ -1,0 +1,24 @@
+dependencies{
+	compile project(':example6')
+}
+
+jar{
+
+	manifest {
+		// the manifest of the default jar is of type OsgiManifest
+		name = 'Spell checker client'
+		description='A bundle that uses the spell checker service'
+		vendor='Apache Felix'
+		version= '1.0.0'
+		instruction 'Bundle-Activator','tutorial.example7.Activator'
+		instruction 'Import-Package','org.osgi.framework, org.osgi.util.tracker,tutorial.example6.service'
+		//
+		//			instruction 'Private-Package',
+		//					'org.mycomp.package1',
+		//					'org.mycomp.package2'
+		//			instruction 'Bundle-Vendor', 'Apache Felix'
+		//			instruction 'Bundle-Description', 'Platform2: Metrics 2 Measures Framework'
+		//			instruction 'Bundle-DocURL', 'http://www.mycompany.com'
+
+	}
+}
