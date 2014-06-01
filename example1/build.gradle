@@ -1,0 +1,22 @@
+
+
+jar{
+
+	manifest {
+		// the manifest of the default jar is of type OsgiManifest
+		name = 'Service listener example'
+		description='A bundle that displays messages at startup and when service events occur'
+		vendor='Apache Felix'
+		version= '1.0.0'
+		instruction 'Bundle-Activator','tutorial.example1.Activator'
+		instruction 'Import-Package','org.osgi.framework'
+		//
+		//			instruction 'Private-Package',
+		//					'org.mycomp.package1',
+		//					'org.mycomp.package2'
+		//			instruction 'Bundle-Vendor', 'Apache Felix'
+		//			instruction 'Bundle-Description', 'Platform2: Metrics 2 Measures Framework'
+		//			instruction 'Bundle-DocURL', 'http://www.mycompany.com'
+
+	}
+}
