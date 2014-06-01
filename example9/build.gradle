@@ -9,7 +9,13 @@ dependencies {
 }
 
 jar{
-	manifest{ instruction 'Bundle-Activator','examples.guice.servlet.osgi.internal.ExampleActivator' }
+	manifest{
+		name = 'PeaBerry guice-servlet-osgi-example'
+		description='guice-servlet-osgi-example.'
+		vendor='Apache Felix'
+		version= '1.0.0'
+		instruction 'Bundle-Activator','examples.guice.servlet.osgi.internal.ExampleActivator'
+	}
 }
 
 task copyDependentLibs(type:Copy,overwrite:true){
