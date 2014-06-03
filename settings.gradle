@@ -1,3 +1,4 @@
 
 rootProject.name = 'felix_tutorial'
 include 'example1','example2','example3','example4','example5','example6','example7','example9'
+include 'Scrambler','ScramblerTest'
