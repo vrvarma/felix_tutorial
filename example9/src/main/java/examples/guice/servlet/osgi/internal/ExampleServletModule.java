@@ -7,7 +7,11 @@ public class ExampleServletModule extends ServletModule {
 	@Override
 	protected void configureServlets() {
 		serve("/example/*").with(ExampleServlet.class);
-
+		
+		serve("/static/manchu.html").with(CricketServlet.class);
+		
+		
+		serve("/static/*").with(StaticServlet.class);
 		bindConstant().annotatedWith(Names.named("message"))
 				.to("Hello, World!");
 
