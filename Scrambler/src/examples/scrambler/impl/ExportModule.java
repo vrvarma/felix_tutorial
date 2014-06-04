@@ -14,6 +14,7 @@ public class ExportModule extends AbstractModule {
 	protected void configure() {
 
 		// note: the service is exported to the registry at injection time
-		bind(export(Scramble.class)).toProvider(service(new ScrambleImpl()).export());
+		bind(export(Scramble.class)).toProvider(service(ScrambleImpl.class).export());
+
 	}
 }

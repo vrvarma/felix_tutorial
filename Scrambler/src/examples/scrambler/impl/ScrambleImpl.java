@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import examples.scrambler.Scramble;
 
 // basic text scrambler implementation
+@Singleton
 public class ScrambleImpl implements Scramble {
 
 	public String process(final String message) {
