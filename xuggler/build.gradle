@@ -1,0 +1,27 @@
+
+dependencies {
+//	compile group: 'com.google.inject', name: 'guice', version:'3.0'
+//	compile group: 'com.google.inject.extensions', name: 'guice-servlet', version:'3.0'
+//	compile group: 'org.ops4j', name: 'peaberry', version:'1.3'
+//	compile group: 'org.osgi', name: 'org.osgi.core', version:'4.2.0'
+//	compile group: 'org.osgi', name: 'org.osgi.compendium', version:'4.2.0'
+//	compile group: 'org.apache.felix', name: 'org.apache.felix.http.jetty', version:'2.2.0'
+	
+	compile 'xuggle:xuggle-xuggler:5.4'
+//	compile 'xuggle:xuggle-utils:1.22'
+//	compile 'xuggle:xuggle-xuggler-red5:3.1.875.200908131110'
+	
+	compile 'uk.co.caprica:vlcj:3.0.1'
+	
+}
+
+
+jar{
+    manifest{
+	    name = 'Xuggler'
+	    description=''
+	    vendor='Apache Felix'
+	    version= '1.0.0'
+	    //instruction 'Bundle-Activator','com.extensiblejava.hello.web.Activator'
+    }
+}

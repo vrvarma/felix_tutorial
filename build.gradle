@@ -2,18 +2,23 @@
 apply plugin :'base'
 
 // In this section you declare where to find the dependencies of your project
-allprojects { repositories { mavenCentral() } }
+allprojects {
+    repositories {
+	mavenCentral()
+	maven{ url 'http://xuggle.googlecode.com/svn/trunk/repo/share/java' }
+
+    } }
 
 subprojects{ subproject->
 
 
-	apply plugin: 'java'
-	apply plugin:'eclipse'
-	apply plugin: 'osgi'
-	dependencies {
+    apply plugin: 'java'
+    apply plugin:'eclipse'
+    apply plugin: 'osgi'
+    dependencies {
 
-		testCompile "junit:junit:4.11"
-		compile 'org.apache.felix:org.apache.felix.framework:4.4.0'
-	}
+	testCompile "junit:junit:4.11"
+	compile 'org.apache.felix:org.apache.felix.framework:4.4.0'
+    }
 }
 
