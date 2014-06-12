@@ -1536,6 +1536,7 @@ public class Converter
     {
       System.err.printf("Error: %s\n", exception.getMessage());
     }
+    System.exit(0);
   }
 
 }
