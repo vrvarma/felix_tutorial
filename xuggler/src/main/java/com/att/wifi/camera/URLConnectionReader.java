@@ -10,26 +10,51 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 
 public class URLConnectionReader {
-    private static final int TIMEOUT_MILLISECONDS = 30000;
-    private static final int MB = 10 * 1024;
-    private static final int MAX_NUMBER_INDEX = 3;
-    private static String POST_FIX = ".ts";
 
     public static void main(String[] args) throws Exception {
 
-	String ipAddress = args[0];
-	String tmpDirectory = args[1];
+	String tmpDirectory = args[0];
 
-	URL website = new URL("http://" + ipAddress + "/img/media.ts");
-	ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-	generateFiles(rbc, ipAddress, tmpDirectory);
+	for (int i = 1; i < args.length; i++) {
+
+	    String ipAddress = args[i];
+
+	    new Thread(new VideoThread(ipAddress, tmpDirectory)).start();
+	}
 
     }
 
-    private static void generateFiles(ReadableByteChannel rbc,
-	    String ipAddress, String tmpDirectory) throws IOException,
-	    FileNotFoundException {
+}
 
+class VideoThread implements Runnable {
+
+    private String hostName;
+    private String tmpDir;
+
+    public VideoThread(String hostName, String tmpDir) {
+	this.hostName = hostName;
+	this.tmpDir = tmpDir;
+    }
+
+    @Override
+    public void run() {
+
+	try {
+	    generateFiles(hostName, tmpDir);
+	} catch (FileNotFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+    }
+
+    private static void generateFiles(String ipAddress, String tmpDirectory)
+	    throws IOException, FileNotFoundException {
+
+	URL website = new URL("http://" + ipAddress + "/img/media.ts");
+	ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 	long timeOut = calculateTimeout();
 	long now = 0;
 	FileChannel fc = null;
@@ -130,5 +155,10 @@ public class URLConnectionReader {
 	System.err.println(now > timeOut);
 	return now > timeOut;
     }
+
+    private static final int TIMEOUT_MILLISECONDS = 30000;
+    private static final int MB = 10 * 1024;
+    private static final int MAX_NUMBER_INDEX = 3;
+    private static String POST_FIX = ".ts";
 
 }
