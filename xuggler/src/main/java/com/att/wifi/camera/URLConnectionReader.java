@@ -1,6 +1,5 @@
 package com.att.wifi.camera;
 
-
 public class URLConnectionReader {
 
     public static void main(String[] args) throws Exception {

@@ -10,6 +10,8 @@ public class ImageFileDTO {
 
     private long position;
 
+    private String filePath;
+
     private FileChannel fc;
 
     public ImageFileDTO() {
@@ -47,5 +49,13 @@ public class ImageFileDTO {
 
 	return System.currentTimeMillis() > timeOut;
 
+    }
+
+    public String getFilePath() {
+	return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+	this.filePath = filePath;
     }
 }

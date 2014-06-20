@@ -60,7 +60,7 @@ import com.xuggle.xuggler.demos.VideoImage;
  * </p>
  * 
  * @author aclarke
- *
+ * 
  */
 public class DisplayWebcamVideo {
     /**

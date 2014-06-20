@@ -1,7 +1,6 @@
 package com.att.wifi.camera;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -27,17 +26,13 @@ public class FileCacheImpl implements FileCache {
     private static String POST_FIX = ".ts";
 
     @Override
-    @SuppressWarnings("resource")
     public ImageFileDTO getFileCache(String tmpDirectory, String fileName)
-	    throws FileNotFoundException, IOException {
+	    throws IOException {
 
 	ImageFileDTO dto = fileDtoCache.get(fileName);
 	if (dto == null) {
 
-	    dto = new ImageFileDTO();
-	    File file = getFile(tmpDirectory, fileName);
-	    FileChannel fc = new FileOutputStream(file).getChannel();
-	    dto.setFc(fc);
+	    dto = populateFileCacheObject(tmpDirectory, fileName);
 	    fileDtoCache.put(fileName, dto);
 
 	} else {
@@ -46,10 +41,7 @@ public class FileCacheImpl implements FileCache {
 
 		dto.getFc().close();
 		rollOver(tmpDirectory, fileName);
-		dto = new ImageFileDTO();
-		File file = getFile(tmpDirectory, fileName);
-		FileChannel fc = new FileOutputStream(file).getChannel();
-		dto.setFc(fc);
+		dto = populateFileCacheObject(tmpDirectory, fileName);
 		fileDtoCache.remove(fileName);
 		fileDtoCache.put(fileName, dto);
 	    }
@@ -57,6 +49,19 @@ public class FileCacheImpl implements FileCache {
 
 	return dto;
 
+    }
+
+    @SuppressWarnings("resource")
+    private ImageFileDTO populateFileCacheObject(String tmpDirectory,
+	    String fileName) throws IOException {
+
+	File file = getFile(tmpDirectory, fileName);
+	FileChannel fc = new FileOutputStream(file).getChannel();
+
+	ImageFileDTO dto = new ImageFileDTO();
+	dto.setFilePath(file.getCanonicalPath());
+	dto.setFc(fc);
+	return dto;
     }
 
     private static File getFile(String directory, String fileName) {
@@ -71,6 +76,7 @@ public class FileCacheImpl implements FileCache {
 
 	boolean renameSucceeded = true;
 	if (MAX_NUMBER_INDEX > 0) {
+
 	    // Delete the oldest file, to keep Windows happy.
 	    file = getFile(directory, fileName + "_" + MAX_NUMBER_INDEX);
 	    if (file.exists()) {

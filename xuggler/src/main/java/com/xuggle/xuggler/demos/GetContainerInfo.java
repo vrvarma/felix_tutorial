@@ -33,7 +33,7 @@ import com.xuggle.xuggler.IStreamCoder;
  * option on the container and streams is set to.
  * 
  * @author aclarke
- *
+ * 
  */
 public class GetContainerInfo {
     /**
