@@ -22,40 +22,48 @@ public class ImageFileDTO {
     }
 
     public long getTimeOut() {
+	
 	return timeOut;
     }
 
     public void setTimeOut(long timeOut) {
+	
 	this.timeOut = timeOut;
     }
 
     public long getPosition() {
+	
 	return position;
     }
 
     public void setPosition(long position) {
+	
 	this.position = position;
     }
 
     public FileChannel getFc() {
+	
 	return fc;
     }
 
     public void setFc(FileChannel fc) {
+	
 	this.fc = fc;
     }
 
     public boolean isTimeOut() {
 
-	return System.currentTimeMillis() > timeOut;
+	return System.currentTimeMillis() >= timeOut;
 
     }
 
     public String getFilePath() {
+	
 	return filePath;
     }
 
     public void setFilePath(String filePath) {
+	
 	this.filePath = filePath;
     }
 }

@@ -34,7 +34,7 @@ public class FileCacheImpl implements FileCache {
 	position += fc.transferFrom(rbc, position, MAX_FILE_SIZE);
 	dto.setPosition(position);
 
-    }	
+    }
 
     private ImageFileDTO getFileCache(String tmpDirectory, String fileName)
 	    throws IOException {
@@ -45,16 +45,15 @@ public class FileCacheImpl implements FileCache {
 	    dto = populateFileCacheObject(tmpDirectory, fileName);
 	    fileDtoCache.put(fileName, dto);
 
-	} else {
+	} else if (dto.isTimeOut()) {
 
-	    if (dto.isTimeOut()) {
+	    dto.getFc().force(true);
+	    dto.getFc().close();
+	    FileUtils.rollOver(tmpDirectory, fileName);
+	    dto = populateFileCacheObject(tmpDirectory, fileName);
+	    fileDtoCache.remove(fileName);
+	    fileDtoCache.put(fileName, dto);
 
-		dto.getFc().close();
-		FileUtils.rollOver(tmpDirectory, fileName);
-		dto = populateFileCacheObject(tmpDirectory, fileName);
-		fileDtoCache.remove(fileName);
-		fileDtoCache.put(fileName, dto);
-	    }
 	}
 
 	return dto;

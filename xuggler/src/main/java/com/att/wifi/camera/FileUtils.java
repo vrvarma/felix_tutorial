@@ -1,6 +1,7 @@
 package com.att.wifi.camera;
 
 import java.io.File;
+import java.io.IOException;
 
 public final class FileUtils {
 
@@ -10,6 +11,12 @@ public final class FileUtils {
     public static File getFile(String directory, String fileName) {
 
 	return new File(directory, fileName + POST_FIX);
+    }
+
+    public static File getTemperoryFile(String directory, String fileName) throws IOException {
+
+	return File.createTempFile(fileName, POST_FIX, new File(directory));
+
     }
 
     public static void rollOver(String directory, String fileName) {
