@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FileCacheImpl implements FileCache {
+
+    private static final int MAX_FILE_SIZE = 10 * 1024;
 
     private static Map<String, ImageFileDTO> fileDtoCache = new HashMap<String, ImageFileDTO>();
 
@@ -22,7 +25,18 @@ public class FileCacheImpl implements FileCache {
     }
 
     @Override
-    public ImageFileDTO getFileCache(String tmpDirectory, String fileName)
+    public void transferImage(String fileName, String tmpDirectory,
+	    ReadableByteChannel rbc) throws IOException {
+
+	ImageFileDTO dto = getFileCache(tmpDirectory, fileName);
+	FileChannel fc = dto.getFc();
+	long position = dto.getPosition();
+	position += fc.transferFrom(rbc, position, MAX_FILE_SIZE);
+	dto.setPosition(position);
+
+    }	
+
+    private ImageFileDTO getFileCache(String tmpDirectory, String fileName)
 	    throws IOException {
 
 	ImageFileDTO dto = fileDtoCache.get(fileName);

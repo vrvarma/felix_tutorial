@@ -4,12 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 
 class VideoThread implements Runnable {
 
-    private static final int MAX_FILE_SIZE = 10 * 1024;
+    // @Inject
+    FileCache fileCache = FileCacheImpl.getInstance();
 
     private String hostName;
     private String tmpDir;
@@ -43,13 +43,7 @@ class VideoThread implements Runnable {
 
 	while (true) {
 
-	    FileCache fileCache = FileCacheImpl.getInstance();
-	    ImageFileDTO dto = fileCache.getFileCache(tmpDirectory, ipAddress);
-	    FileChannel fc = dto.getFc();
-	    long position = dto.getPosition();
-	    position += fc.transferFrom(rbc, position, MAX_FILE_SIZE);
-	    dto.setPosition(position);
-
+	    fileCache.transferImage(ipAddress, tmpDirectory, rbc);
 	}
     }
 

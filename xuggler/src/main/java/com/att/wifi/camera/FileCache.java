@@ -1,9 +1,10 @@
 package com.att.wifi.camera;
 
 import java.io.IOException;
+import java.nio.channels.ReadableByteChannel;
 
 public interface FileCache {
 
-    ImageFileDTO getFileCache(String tmpDirectory, String fileName)
-	    throws IOException;
+    void transferImage(String ipAddress, String tmpDirectory,
+	    ReadableByteChannel rbc) throws IOException;
 }
