@@ -12,7 +12,11 @@ public class FileCacheImpl implements FileCache {
 
     private static final int MAX_FILE_SIZE = 10 * 1024;
 
-    private static Map<String, ImageFileDTO> fileDtoCache = new HashMap<String, ImageFileDTO>();
+    private static Map<String, ImageFileDTO> fileChannelMap = new HashMap<String, ImageFileDTO>();
+
+//    ListMultimap<String, ImageFileDTO> imageFileCache = ArrayListMultimap
+//     .create();
+//    // Change this to a MultiMap
 
     private static FileCache instance = new FileCacheImpl();
 
@@ -39,20 +43,25 @@ public class FileCacheImpl implements FileCache {
     private ImageFileDTO getFileCache(String tmpDirectory, String fileName)
 	    throws IOException {
 
-	ImageFileDTO dto = fileDtoCache.get(fileName);
+	ImageFileDTO dto = fileChannelMap.get(fileName);
 	if (dto == null) {
 
 	    dto = populateFileCacheObject(tmpDirectory, fileName);
-	    fileDtoCache.put(fileName, dto);
+	    fileChannelMap.put(fileName, dto);
 
 	} else if (dto.isTimeOut()) {
 
 	    dto.getFc().force(true);
 	    dto.getFc().close();
+	    dto.setFc(null);
+
+	    // imageFileCache.put(fileName, dto);
+	    // cleanupTempFiles(imageFileCache);
+
 	    FileUtils.rollOver(tmpDirectory, fileName);
 	    dto = populateFileCacheObject(tmpDirectory, fileName);
-	    fileDtoCache.remove(fileName);
-	    fileDtoCache.put(fileName, dto);
+	    fileChannelMap.remove(fileName);
+	    fileChannelMap.put(fileName, dto);
 
 	}
 
@@ -63,6 +72,9 @@ public class FileCacheImpl implements FileCache {
     @SuppressWarnings("resource")
     private ImageFileDTO populateFileCacheObject(String tmpDirectory,
 	    String fileName) throws IOException {
+
+	new File(tmpDirectory).mkdir();
+	// File file = FileUtils.getTemperoryFile(tmpDirectory, fileName);
 
 	File file = FileUtils.getFile(tmpDirectory, fileName);
 	FileChannel fc = new FileOutputStream(file).getChannel();

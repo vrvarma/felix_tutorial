@@ -8,6 +8,7 @@ dependencies {
 //	compile group: 'org.apache.felix', name: 'org.apache.felix.http.jetty', version:'2.2.0'
 	
 	compile 'xuggle:xuggle-xuggler:5.4'
+	compile 'com.google.guava:guava:17.0'
 //	compile 'xuggle:xuggle-utils:1.22'
 //	compile 'xuggle:xuggle-xuggler-red5:3.1.875.200908131110'
 	
@@ -17,11 +18,5 @@ dependencies {
 
 
 jar{
-    manifest{
-	    name = 'Xuggler'
-	    description=''
-	    vendor='Apache Felix'
-	    version= '1.0.0'
-	    //instruction 'Bundle-Activator','com.extensiblejava.hello.web.Activator'
-    }
+    archiveName='urlstreamer.jar'
 }

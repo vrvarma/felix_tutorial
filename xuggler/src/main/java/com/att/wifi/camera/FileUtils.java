@@ -2,6 +2,7 @@ package com.att.wifi.camera;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public final class FileUtils {
 
@@ -13,9 +14,13 @@ public final class FileUtils {
 	return new File(directory, fileName + POST_FIX);
     }
 
-    public static File getTemperoryFile(String directory, String fileName) throws IOException {
+    public static File getTemperoryFile(String directory, String fileName)
+	    throws IOException {
 
-	return File.createTempFile(fileName, POST_FIX, new File(directory));
+	File file = File
+		.createTempFile(fileName, POST_FIX, new File(directory));
+	file.deleteOnExit();
+	return file;
 
     }
 
@@ -59,6 +64,58 @@ public final class FileUtils {
 	    }
 	    System.out.println("Rename " + renameSucceeded);
 	}
+    }
+
+    // public static void removeRecursive(Path path) throws IOException {
+    //
+    // Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+    // @Override
+    // public FileVisitResult visitFile(Path file,
+    // BasicFileAttributes attrs) throws IOException {
+    // Files.delete(file);
+    // return FileVisitResult.CONTINUE;
+    // }
+    //
+    // @Override
+    // public FileVisitResult visitFileFailed(Path file, IOException exc)
+    // throws IOException {
+    //
+    // // try to delete the file anyway, even if its attributes
+    // // could not be read, since delete-only access is
+    // // theoretically possible
+    // Files.delete(file);
+    // return FileVisitResult.CONTINUE;
+    // }
+    //
+    // @Override
+    // public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+    // throws IOException {
+    //
+    // if (exc == null) {
+    // Files.delete(dir);
+    // return FileVisitResult.CONTINUE;
+    // } else {
+    // // directory iteration failed; propagate exception
+    // throw exc;
+    // }
+    // }
+    // });
+    //
+    // }
+    
+    public static boolean deleteDir(File dir) throws IOException {
+
+	if (dir.isDirectory()) {
+	    String[] children = dir.list();
+	    for (int i = 0; i < children.length; i++) {
+		boolean success = deleteDir(new File(dir, children[i]));
+		if (!success) {
+		    return false;
+		}
+	    }
+	}
+	return Files.deleteIfExists(dir.toPath());
+
     }
 
 }
