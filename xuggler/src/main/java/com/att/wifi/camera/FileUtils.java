@@ -19,7 +19,7 @@ public final class FileUtils {
 
 	File file = File
 		.createTempFile(fileName, POST_FIX, new File(directory));
-	file.deleteOnExit();
+	//file.deleteOnExit();
 	return file;
 
     }

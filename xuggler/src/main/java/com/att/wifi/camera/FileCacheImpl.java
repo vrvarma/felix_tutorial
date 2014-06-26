@@ -5,8 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 
 public class FileCacheImpl implements FileCache {
 
@@ -14,10 +20,8 @@ public class FileCacheImpl implements FileCache {
 
     private static Map<String, ImageFileDTO> fileChannelMap = new HashMap<String, ImageFileDTO>();
 
-//    ListMultimap<String, ImageFileDTO> imageFileCache = ArrayListMultimap
-//     .create();
-//    // Change this to a MultiMap
-
+    ListMultimap<String, ImageFileDTO> imageFileCache = LinkedListMultimap 
+	    .create();
     private static FileCache instance = new FileCacheImpl();
 
     private FileCacheImpl() {
@@ -55,17 +59,40 @@ public class FileCacheImpl implements FileCache {
 	    dto.getFc().close();
 	    dto.setFc(null);
 
-	    // imageFileCache.put(fileName, dto);
-	    // cleanupTempFiles(imageFileCache);
+	    imageFileCache.put(fileName, dto);
+	    cleanupTempFiles(fileName);
 
-	    FileUtils.rollOver(tmpDirectory, fileName);
+	    // FileUtils.rollOver(tmpDirectory, fileName);
 	    dto = populateFileCacheObject(tmpDirectory, fileName);
 	    fileChannelMap.remove(fileName);
 	    fileChannelMap.put(fileName, dto);
+	    System.out.println("FileChannel Map -> " + fileChannelMap);
 
 	}
 
 	return dto;
+
+    }
+
+    private void cleanupTempFiles(String fileName) throws IOException {
+
+	List<ImageFileDTO> fileList = new CopyOnWriteArrayList<ImageFileDTO>(
+		imageFileCache.get(fileName));
+
+	long currentTime = System.currentTimeMillis();
+
+	for (ImageFileDTO image : fileList) {
+
+	    if (currentTime > image.getTimeOut() + 60000) {
+
+		System.out.println("Removing " + image.getFilePath());
+		Files.deleteIfExists(new File(image.getFilePath()).toPath());
+		imageFileCache.remove(fileName, image);
+	    }
+
+	}
+
+	System.out.println("ImageFile Cache -->> " + imageFileCache);
 
     }
 
@@ -74,9 +101,9 @@ public class FileCacheImpl implements FileCache {
 	    String fileName) throws IOException {
 
 	new File(tmpDirectory).mkdir();
-	// File file = FileUtils.getTemperoryFile(tmpDirectory, fileName);
+	File file = FileUtils.getTemperoryFile(tmpDirectory, fileName);
 
-	File file = FileUtils.getFile(tmpDirectory, fileName);
+	// File file = FileUtils.getFile(tmpDirectory, fileName);
 	FileChannel fc = new FileOutputStream(file).getChannel();
 
 	ImageFileDTO dto = new ImageFileDTO();
