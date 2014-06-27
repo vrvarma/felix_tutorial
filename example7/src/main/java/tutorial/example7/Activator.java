@@ -49,7 +49,7 @@ public class Activator implements BundleActivator {
 		m_tracker.open();
 
 		try {
-			System.out.println("Enter a blank line to exit.");
+			LOGGER.debug("Enter a blank line to exit.");
 			String passage = "";
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					System.in));
@@ -70,18 +70,18 @@ public class Activator implements BundleActivator {
 				}
 				// If there is no spell checker, then say so.
 				else if (checker == null) {
-					System.out.println("No spell checker available.");
+					LOGGER.debug("No spell checker available.");
 				}
 				// Otherwise check passage and print misspelled words.
 				else {
 					String[] errors = checker.check(passage);
 
 					if (errors == null) {
-						System.out.println("Passage is correct.");
+						LOGGER.debug("Passage is correct.");
 					} else {
-						System.out.println("Incorrect word(s):");
+						LOGGER.debug("Incorrect word(s):");
 						for (int i = 0; i < errors.length; i++) {
-							System.out.println("    " + errors[i]);
+							LOGGER.debug("    " + errors[i]);
 						}
 					}
 				}

@@ -20,6 +20,9 @@ package com.xuggle.xuggler;
 
 import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.xuggle.xuggler.ICodec.ID;
 
 /**
@@ -32,6 +35,7 @@ import com.xuggle.xuggler.ICodec.ID;
  */
 public class GetSupportedCodecs {
 
+    private static final Logger LOGGER=LogManager.getLogger(GetSupportedCodecs.class);
     /**
      * Given the short name of a container, prints out information about it,
      * including which codecs Xuggler can write (mux) into that container.
@@ -49,16 +53,16 @@ public class GetSupportedCodecs {
 
 	List<ID> codecs = format.getOutputCodecsSupported();
 
-	System.out.println("Container Format: " + format);
-	System.out.println();
-	System.out.println("Total codecs supported: "
+	LOGGER.debug("Container Format: " + format);
+	
+	LOGGER.debug("Total codecs supported: "
 		+ format.getOutputNumCodecsSupported());
-	System.out.println("Supported Codecs:");
+	LOGGER.debug("Supported Codecs:");
 	for (ID id : codecs) {
 	    if (id != null) {
 		ICodec codec = ICodec.findEncodingCodec(id);
 		if (codec != null && codec.canEncode()) {
-		    System.out.println(codec);
+		    LOGGER.debug(codec);
 		}
 	    }
 	}

@@ -32,7 +32,7 @@ public class Activator implements BundleActivator {
 				// support cooperative cancellation
 				while (Thread.currentThread() == tester) {
 					try {
-						System.out.println('[' + service.process(TEXT) + ']');
+						LOGGER.debug('[' + service.process(TEXT) + ']');
 					} catch (final ServiceUnavailableException e) {
 						System.err.println("No scrambler service!");
 					}

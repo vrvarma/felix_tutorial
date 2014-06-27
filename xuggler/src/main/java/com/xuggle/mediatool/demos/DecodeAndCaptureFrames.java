@@ -24,6 +24,9 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.xuggle.mediatool.IMediaReader;
 import com.xuggle.mediatool.MediaListenerAdapter;
 import com.xuggle.mediatool.ToolFactory;
@@ -40,6 +43,9 @@ import com.xuggle.xuggler.Global;
  */
 
 public class DecodeAndCaptureFrames extends MediaListenerAdapter {
+    
+    
+    private static final Logger LOGGER=LogManager.getLogger(DecodeAndCaptureFrames.class);
     /**
      * The number of seconds between frames.
      */
@@ -175,7 +181,7 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
 		mLastPtsWrite += MICRO_SECONDS_BETWEEN_FRAMES;
 	    }
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    LOGGER.error("Exception Thrown --> ",e);
 	}
     }
 }

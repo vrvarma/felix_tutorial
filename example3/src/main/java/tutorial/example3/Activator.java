@@ -47,7 +47,7 @@ public class Activator implements BundleActivator
         {
             try
             {
-                System.out.println("Enter a blank line to exit.");
+                LOGGER.debug("Enter a blank line to exit.");
                 BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
                 String word = "";
 
@@ -71,11 +71,11 @@ public class Activator implements BundleActivator
                         (DictionaryService) context.getService(refs[0]);
                     if (dictionary.checkWord(word))
                     {
-                        System.out.println("Correct.");
+                        LOGGER.debug("Correct.");
                     }
                     else
                     {
-                        System.out.println("Incorrect.");
+                        LOGGER.debug("Incorrect.");
                     }
 
                     // Unget the dictionary service.
@@ -85,7 +85,7 @@ public class Activator implements BundleActivator
         }
         else
         {
-            System.out.println("Couldn't find any dictionary service...");
+            LOGGER.debug("Couldn't find any dictionary service...");
         }
     }
 

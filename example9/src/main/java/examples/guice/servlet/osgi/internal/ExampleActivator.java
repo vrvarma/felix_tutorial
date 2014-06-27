@@ -33,7 +33,7 @@ public class ExampleActivator implements BundleActivator {
 					((ExtHttpService) service).registerFilter(guiceFilter,
 							".*", null, 0, null);
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOGGER.error("Exception Thrown --> ",e);
 				}
 				return service;
 			}

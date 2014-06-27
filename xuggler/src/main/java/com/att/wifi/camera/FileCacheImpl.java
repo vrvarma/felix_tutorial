@@ -11,12 +11,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 
 public class FileCacheImpl implements FileCache {
 
+    private static final long FILECACHE_TIMEOUT = 3*60000;
+
     private static final int MAX_FILE_SIZE = 10 * 1024;
+    
+    private static final Logger LOGGER=LogManager.getLogger(FileCacheImpl.class);
 
     private static Map<String, ImageFileDTO> fileChannelMap = new HashMap<String, ImageFileDTO>();
 
@@ -66,7 +73,7 @@ public class FileCacheImpl implements FileCache {
 	    dto = populateFileCacheObject(tmpDirectory, fileName);
 	    fileChannelMap.remove(fileName);
 	    fileChannelMap.put(fileName, dto);
-	    System.out.println("FileChannel Map -> " + fileChannelMap);
+	    LOGGER.debug("FileChannel Map -> " + fileChannelMap);
 
 	}
 
@@ -83,16 +90,16 @@ public class FileCacheImpl implements FileCache {
 
 	for (ImageFileDTO image : fileList) {
 
-	    if (currentTime > image.getTimeOut() + 60000) {
+	    if (currentTime > image.getTimeOut() + FILECACHE_TIMEOUT) {
 
-		System.out.println("Removing " + image.getFilePath());
+		LOGGER.debug("Removing " + image.getFilePath());
 		Files.deleteIfExists(new File(image.getFilePath()).toPath());
 		imageFileCache.remove(fileName, image);
 	    }
 
 	}
 
-	System.out.println("ImageFile Cache -->> " + imageFileCache);
+	LOGGER.debug("ImageFile Cache -->> " + imageFileCache);
 
     }
 

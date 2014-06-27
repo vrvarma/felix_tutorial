@@ -11,7 +11,13 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
-class VideoThread implements Runnable {
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+public class VideoThread implements Runnable {
+
+    private static final Logger LOGGER = LogManager
+	    .getLogger(VideoThread.class);
 
     // @Inject
     FileCache fileCache = FileCacheImpl.getInstance();
@@ -33,17 +39,17 @@ class VideoThread implements Runnable {
 	    generateFiles(hostName, tmpDir);
 	} catch (FileNotFoundException e) {
 
-	    e.printStackTrace();
+	    LOGGER.error("Exception Thrown --> ",e);
 	} catch (IOException e) {
 
-	    e.printStackTrace();
+	    LOGGER.error("Exception Thrown --> ",e);
 	}
     }
 
     private void generateFiles(String ipAddress, String tmpDirectory)
 	    throws IOException, FileNotFoundException {
 
-	String urlString = "https://" + ipAddress + "/img/media.ts";
+	String urlString = "http://" + ipAddress + "/img/media.ts";
 
 	URLConnection urlConnection = getConnection(urlString);
 	ReadableByteChannel rbc = Channels.newChannel(urlConnection
@@ -61,18 +67,17 @@ class VideoThread implements Runnable {
 	URLConnection urlConnection = website.openConnection();
 	if (urlConnection instanceof HttpsURLConnection) {
 
-	    
-	    System.out.println("trustStore="
+	    LOGGER.debug("trustStore="
 		    + System.getProperty("javax.net.ssl.trustStore"));
-	    System.out.println("trustStorePassword="
+	    LOGGER.debug("trustStorePassword="
 		    + System.getProperty("javax.net.ssl.trustStorePassword"));
-	    System.out.println("trustStoreType="
+	    LOGGER.debug("trustStoreType="
 		    + System.getProperty("javax.net.ssl.trustStoreType"));
-	    System.out.println("keyStore="
+	    LOGGER.debug("keyStore="
 		    + System.getProperty("javax.net.ssl.keyStore"));
-	    System.out.println("keyStorePassword="
+	    LOGGER.debug("keyStorePassword="
 		    + System.getProperty("javax.net.ssl.keyStorePassword"));
-	    System.out.println("keyStoreType="
+	    LOGGER.debug("keyStoreType="
 		    + System.getProperty("javax.net.ssl.keyStoreType"));
 
 	    HttpsURLConnection sslConnection = (HttpsURLConnection) urlConnection;

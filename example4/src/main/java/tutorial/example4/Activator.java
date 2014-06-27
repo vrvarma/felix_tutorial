@@ -85,7 +85,7 @@ public class Activator implements BundleActivator, ServiceListener
 
         try
         {
-            System.out.println("Enter a blank line to exit.");
+            LOGGER.debug("Enter a blank line to exit.");
             String word = "";
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -105,16 +105,16 @@ public class Activator implements BundleActivator, ServiceListener
                 // If there is no dictionary, then say so.
                 else if (m_dictionary == null)
                 {
-                    System.out.println("No dictionary available.");
+                    LOGGER.debug("No dictionary available.");
                 }
                 // Otherwise print whether the word is correct or not.
                 else if (m_dictionary.checkWord(word))
                 {
-                    System.out.println("Correct.");
+                    LOGGER.debug("Correct.");
                 }
                 else
                 {
-                    System.out.println("Incorrect.");
+                    LOGGER.debug("Incorrect.");
                 }
             }
         } catch (Exception ex) { }

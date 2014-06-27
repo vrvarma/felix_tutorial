@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 public final class FileUtils {
 
+    private static final Logger LOGGER=LogManager.getLogger(FileUtils.class);
     private static final int MAX_NUMBER_INDEX = 3;
     private static final String POST_FIX = ".ts";
 
@@ -47,7 +51,7 @@ public final class FileUtils {
 		if (file.exists()) {
 
 		    target = getFile(directory, fileName + "_" + (i + 1));
-		    System.out.println("Renaming file " + file + " to "
+		    LOGGER.debug("Renaming file " + file + " to "
 			    + target);
 		    renameSucceeded = file.renameTo(target);
 		}
@@ -58,11 +62,11 @@ public final class FileUtils {
 		// Rename fileName to fileName_1.ts
 		target = getFile(directory, fileName + "_" + 1);
 		file = getFile(directory, fileName);
-		System.out.println("Renaming file " + file + " to " + target);
+		LOGGER.debug("Renaming file " + file + " to " + target);
 		renameSucceeded = file.renameTo(target);
 
 	    }
-	    System.out.println("Rename " + renameSucceeded);
+	    LOGGER.debug("Rename " + renameSucceeded);
 	}
     }
 

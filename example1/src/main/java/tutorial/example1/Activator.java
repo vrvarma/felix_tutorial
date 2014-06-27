@@ -20,7 +20,7 @@ public class Activator implements BundleActivator, ServiceListener
     **/
     public void start(BundleContext context)
     {
-        System.out.println("Starting to listen for service events.");
+        LOGGER.debug("Starting to listen for service events.");
         context.addServiceListener(this);
     }
 
@@ -33,7 +33,7 @@ public class Activator implements BundleActivator, ServiceListener
     public void stop(BundleContext context)
     {
         context.removeServiceListener(this);
-        System.out.println("Stopped listening for service events.");
+        LOGGER.debug("Stopped listening for service events.");
 
         // Note: It is not required that we remove the listener here,
         // since the framework will do it automatically anyway.
@@ -51,17 +51,17 @@ public class Activator implements BundleActivator, ServiceListener
 
         if (event.getType() == ServiceEvent.REGISTERED)
         {
-            System.out.println(
+            LOGGER.debug(
                 "Ex1: Service of type " + objectClass[0] + " registered.");
         }
         else if (event.getType() == ServiceEvent.UNREGISTERING)
         {
-            System.out.println(
+            LOGGER.debug(
                 "Ex1: Service of type " + objectClass[0] + " unregistered.");
         }
         else if (event.getType() == ServiceEvent.MODIFIED)
         {
-            System.out.println(
+            LOGGER.debug(
                 "Ex1: Service of type " + objectClass[0] + " modified.");
         }
     }
