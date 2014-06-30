@@ -19,15 +19,16 @@ import com.google.common.collect.ListMultimap;
 
 public class FileCacheImpl implements FileCache {
 
-    private static final long FILECACHE_TIMEOUT = 3*60000;
+    private static final long FILECACHE_TIMEOUT = 3 * 60000;
 
     private static final int MAX_FILE_SIZE = 10 * 1024;
-    
-    private static final Logger LOGGER=LogManager.getLogger(FileCacheImpl.class);
+
+    private static final Logger LOGGER = LogManager
+	    .getLogger(FileCacheImpl.class);
 
     private static Map<String, ImageFileDTO> fileChannelMap = new HashMap<String, ImageFileDTO>();
 
-    ListMultimap<String, ImageFileDTO> imageFileCache = LinkedListMultimap 
+    ListMultimap<String, ImageFileDTO> imageFileCache = LinkedListMultimap
 	    .create();
     private static FileCache instance = new FileCacheImpl();
 
@@ -44,10 +45,26 @@ public class FileCacheImpl implements FileCache {
 	    ReadableByteChannel rbc) throws IOException {
 
 	ImageFileDTO dto = getFileCache(tmpDirectory, fileName);
-	FileChannel fc = dto.getFc();
-	long position = dto.getPosition();
-	position += fc.transferFrom(rbc, position, MAX_FILE_SIZE);
-	dto.setPosition(position);
+	try {
+	    FileChannel fc = dto.getFc();
+	    long position = dto.getPosition();
+	    
+	   // LOGGER.info("RBC channel "+rbc.isOpen()+ "  "+rbc);
+	    position += fc.transferFrom(rbc, position, MAX_FILE_SIZE);
+	    dto.setPosition(position);
+	} catch (Exception e) {
+
+	    LOGGER.debug("Reached Here", e);
+	    dto.getFc().force(true);
+	    dto.getFc().close();
+	    dto.setFc(null);
+	    fileChannelMap.remove(fileName);
+	    if (rbc.isOpen()) {
+		rbc.close();
+	    }
+	    
+	    throw e;
+	}
 
     }
 
@@ -65,13 +82,13 @@ public class FileCacheImpl implements FileCache {
 	    dto.getFc().force(true);
 	    dto.getFc().close();
 	    dto.setFc(null);
+	    fileChannelMap.remove(fileName);
 
 	    imageFileCache.put(fileName, dto);
 	    cleanupTempFiles(fileName);
-
 	    // FileUtils.rollOver(tmpDirectory, fileName);
 	    dto = populateFileCacheObject(tmpDirectory, fileName);
-	    fileChannelMap.remove(fileName);
+
 	    fileChannelMap.put(fileName, dto);
 	    LOGGER.debug("FileChannel Map -> " + fileChannelMap);
 

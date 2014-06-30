@@ -35,29 +35,34 @@ public class VideoThread implements Runnable {
     public void run() {
 
 	try {
-
 	    generateFiles(hostName, tmpDir);
-	} catch (FileNotFoundException e) {
-
-	    LOGGER.error("Exception Thrown --> ",e);
 	} catch (IOException e) {
 
-	    LOGGER.error("Exception Thrown --> ",e);
+	    LOGGER.error("Exception Thrown --> ", e);
 	}
+
     }
 
     private void generateFiles(String ipAddress, String tmpDirectory)
-	    throws IOException, FileNotFoundException {
+	    throws IOException {
 
 	String urlString = "http://" + ipAddress + "/img/media.ts";
 
-	URLConnection urlConnection = getConnection(urlString);
-	ReadableByteChannel rbc = Channels.newChannel(urlConnection
-		.getInputStream());
-
 	while (true) {
+	    try {
+		URLConnection urlConnection = getConnection(urlString);
+		ReadableByteChannel rbc = Channels.newChannel(urlConnection
+			.getInputStream());
 
-	    fileCache.transferImage(ipAddress, tmpDirectory, rbc);
+		while (true) {
+
+		    fileCache.transferImage(ipAddress, tmpDirectory, rbc);
+		}
+
+	    } catch (Exception e) {
+
+		LOGGER.error("Exception Thrown --> ", e);
+	    }
 	}
     }
 
@@ -65,6 +70,11 @@ public class VideoThread implements Runnable {
 
 	URL website = new URL(urlString);
 	URLConnection urlConnection = website.openConnection();
+	urlConnection.setAllowUserInteraction(false);
+	urlConnection.setRequestProperty("Connection", "Keep-Alive");
+
+	// LOGGER.info("Expiration  " + urlConnection.getExpiration());
+
 	if (urlConnection instanceof HttpsURLConnection) {
 
 	    LOGGER.debug("trustStore="
@@ -84,6 +94,16 @@ public class VideoThread implements Runnable {
 	    sslConnection.setSSLSocketFactory(HttpsURLConnection
 		    .getDefaultSSLSocketFactory());
 	}
+	urlConnection.connect();
+	for (int j = 1;; j++) {
+	    String header = urlConnection.getHeaderField(j);
+	    if (header == null) {
+		break;
+	    }
+	    LOGGER.info("Header " + urlConnection.getHeaderFieldKey(j) + " "
+		    + header);
+	}
+
 	return urlConnection;
     }
 
