@@ -1,8 +1,10 @@
 package com.att.wifi.camera;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
@@ -23,13 +25,11 @@ public class FileCacheImpl implements FileCache {
 
     private static final int MAX_FILE_SIZE = 10 * 1024;
 
-    private static final Logger LOGGER = LogManager
-	    .getLogger(FileCacheImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(FileCacheImpl.class);
 
     private static Map<String, ImageFileDTO> fileChannelMap = new HashMap<String, ImageFileDTO>();
 
-    ListMultimap<String, ImageFileDTO> imageFileCache = LinkedListMultimap
-	    .create();
+    ListMultimap<String, ImageFileDTO> imageFileCache = LinkedListMultimap.create();
     private static FileCache instance = new FileCacheImpl();
 
     private FileCacheImpl() {
@@ -41,35 +41,36 @@ public class FileCacheImpl implements FileCache {
     }
 
     @Override
-    public void transferImage(String fileName, String tmpDirectory,
-	    ReadableByteChannel rbc) throws IOException {
+    public void transferImage(String fileName, String tmpDirectory, InputStream inputStream) throws IOException {
 
-	ImageFileDTO dto = getFileCache(tmpDirectory, fileName);
-	try {
-	    FileChannel fc = dto.getFc();
-	    long position = dto.getPosition();
+	ReadableByteChannel rbc = Channels.newChannel(inputStream);
+	while (true) {
 	    
-	   // LOGGER.info("RBC channel "+rbc.isOpen()+ "  "+rbc);
-	    position += fc.transferFrom(rbc, position, MAX_FILE_SIZE);
-	    dto.setPosition(position);
-	} catch (Exception e) {
+	    ImageFileDTO dto = getFileCache(tmpDirectory, fileName);
+	    try {
+		FileChannel fc = dto.getFc();
+		long position = dto.getPosition();
 
-	    LOGGER.debug("Reached Here", e);
-	    dto.getFc().force(true);
-	    dto.getFc().close();
-	    dto.setFc(null);
-	    fileChannelMap.remove(fileName);
-	    if (rbc.isOpen()) {
-		rbc.close();
+		// LOGGER.info("RBC channel "+rbc.isOpen()+ "  "+rbc);
+		position += fc.transferFrom(rbc, position, MAX_FILE_SIZE);
+		dto.setPosition(position);
+	    } catch (Exception e) {
+
+		LOGGER.debug("Reached Here", e);
+
+		dto.getRaf().close();
+		dto.setRaf(null);
+		fileChannelMap.remove(fileName);
+		if (rbc.isOpen()) {
+		    rbc.close();
+		}
+
 	    }
-	    
-	    throw e;
 	}
 
     }
 
-    private ImageFileDTO getFileCache(String tmpDirectory, String fileName)
-	    throws IOException {
+    private ImageFileDTO getFileCache(String tmpDirectory, String fileName) throws IOException {
 
 	ImageFileDTO dto = fileChannelMap.get(fileName);
 	if (dto == null) {
@@ -79,9 +80,8 @@ public class FileCacheImpl implements FileCache {
 
 	} else if (dto.isTimeOut()) {
 
-	    dto.getFc().force(true);
-	    dto.getFc().close();
-	    dto.setFc(null);
+	    dto.getRaf().close();
+	    dto.setRaf(null);
 	    fileChannelMap.remove(fileName);
 
 	    imageFileCache.put(fileName, dto);
@@ -100,8 +100,7 @@ public class FileCacheImpl implements FileCache {
 
     private void cleanupTempFiles(String fileName) throws IOException {
 
-	List<ImageFileDTO> fileList = new CopyOnWriteArrayList<ImageFileDTO>(
-		imageFileCache.get(fileName));
+	List<ImageFileDTO> fileList = new CopyOnWriteArrayList<ImageFileDTO>(imageFileCache.get(fileName));
 
 	long currentTime = System.currentTimeMillis();
 
@@ -120,19 +119,17 @@ public class FileCacheImpl implements FileCache {
 
     }
 
-    @SuppressWarnings("resource")
-    private ImageFileDTO populateFileCacheObject(String tmpDirectory,
-	    String fileName) throws IOException {
+    private ImageFileDTO populateFileCacheObject(String tmpDirectory, String fileName) throws IOException {
 
 	new File(tmpDirectory).mkdir();
 	File file = FileUtils.getTemperoryFile(tmpDirectory, fileName);
 
 	// File file = FileUtils.getFile(tmpDirectory, fileName);
-	FileChannel fc = new FileOutputStream(file).getChannel();
+	RandomAccessFile raf = new RandomAccessFile(file, "rw");
 
 	ImageFileDTO dto = new ImageFileDTO();
 	dto.setFilePath(file.getCanonicalPath());
-	dto.setFc(fc);
+	dto.setRaf(raf);
 	return dto;
     }
 

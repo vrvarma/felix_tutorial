@@ -257,14 +257,12 @@ public class Converter {
 	 */
 	OptionBuilder.withArgName("container-format");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("output container format to use (e.g. \"mov\")");
+	OptionBuilder.withDescription("output container format to use (e.g. \"mov\")");
 	Option containerFormat = OptionBuilder.create("containerformat");
 
 	OptionBuilder.withArgName("icontainer-format");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("input container format to use (e.g. \"mov\")");
+	OptionBuilder.withDescription("input container format to use (e.g. \"mov\")");
 	Option icontainerFormat = OptionBuilder.create("icontainerformat");
 
 	OptionBuilder.withArgName("file");
@@ -286,44 +284,37 @@ public class Converter {
 
 	OptionBuilder.withArgName("codec");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("audio codec to encode with (e.g. \"libmp3lame\")");
+	OptionBuilder.withDescription("audio codec to encode with (e.g. \"libmp3lame\")");
 	Option acodec = OptionBuilder.create("acodec");
 
 	OptionBuilder.withArgName("icodec");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("input audio codec  (e.g. \"libmp3lame\")");
+	OptionBuilder.withDescription("input audio codec  (e.g. \"libmp3lame\")");
 	Option iacodec = OptionBuilder.create("iacodec");
 
 	OptionBuilder.withArgName("sample-rate");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("audio sample rate to (up/down) encode with (in hz) (e.g. \"22050\")");
+	OptionBuilder.withDescription("audio sample rate to (up/down) encode with (in hz) (e.g. \"22050\")");
 	Option asamplerate = OptionBuilder.create("asamplerate");
 
 	OptionBuilder.withArgName("isample-rate");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("input audio sample rate to (up/down) encode with (in hz) (e.g. \"22050\")");
+	OptionBuilder.withDescription("input audio sample rate to (up/down) encode with (in hz) (e.g. \"22050\")");
 	Option iasamplerate = OptionBuilder.create("iasamplerate");
 
 	OptionBuilder.withArgName("channels");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("number of audio channels (1 or 2) to encode with (e.g. \"2\")");
+	OptionBuilder.withDescription("number of audio channels (1 or 2) to encode with (e.g. \"2\")");
 	Option achannels = OptionBuilder.create("achannels");
 
 	OptionBuilder.withArgName("ichannels");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("input number of audio channels (1 or 2)");
+	OptionBuilder.withDescription("input number of audio channels (1 or 2)");
 	Option iachannels = OptionBuilder.create("iachannels");
 
 	OptionBuilder.withArgName("abit-rate");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("bit rate to encode audio with (in bps) (e.g. \"60000\")");
+	OptionBuilder.withDescription("bit rate to encode audio with (in bps) (e.g. \"60000\")");
 	Option abitrate = OptionBuilder.create("abitrate");
 
 	OptionBuilder.withArgName("stream");
@@ -352,20 +343,17 @@ public class Converter {
 
 	OptionBuilder.withArgName("codec");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("video codec to encode with (e.g. \"mpeg4\")");
+	OptionBuilder.withDescription("video codec to encode with (e.g. \"mpeg4\")");
 	Option vcodec = OptionBuilder.create("vcodec");
 
 	OptionBuilder.withArgName("factor");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("scaling factor to scale output video by (e.g. \"0.75\")");
+	OptionBuilder.withDescription("scaling factor to scale output video by (e.g. \"0.75\")");
 	Option vscaleFactor = OptionBuilder.create("vscalefactor");
 
 	OptionBuilder.withArgName("vbitrate");
 	OptionBuilder.hasArg(true);
-	OptionBuilder
-		.withDescription("bit rate to encode video with (in bps) (e.g. \"60000\")");
+	OptionBuilder.withDescription("bit rate to encode video with (in bps) (e.g. \"60000\")");
 	Option vbitrate = OptionBuilder.create("vbitrate");
 
 	OptionBuilder.withArgName("vbitratetolerance");
@@ -434,8 +422,7 @@ public class Converter {
      * @throws ParseException
      *             If there is an error in the command line.
      */
-    public CommandLine parseOptions(Options opt, String[] args)
-	    throws ParseException {
+    public CommandLine parseOptions(Options opt, String[] args) throws ParseException {
 	CommandLine cmdLine = null;
 
 	CommandLineParser parser = new GnuParser();
@@ -468,8 +455,7 @@ public class Converter {
      * @return The value for the key in the cmdLine, or defaultVal if it's not
      *         there.
      */
-    private int getIntOptionValue(CommandLine cmdLine, String key,
-	    int defaultVal) {
+    private int getIntOptionValue(CommandLine cmdLine, String key, int defaultVal) {
 	int retval = defaultVal;
 	String optValue = cmdLine.getOptionValue(key);
 
@@ -477,9 +463,8 @@ public class Converter {
 	    try {
 		retval = Integer.parseInt(optValue);
 	    } catch (Exception ex) {
-		LOG.warn(
-			"Option \"{}\" value \"{}\" cannot be converted to integer; using {} instead",
-			new Object[] { key, optValue, defaultVal });
+		LOG.warn("Option \"{}\" value \"{}\" cannot be converted to integer; using {} instead", new Object[] {
+			key, optValue, defaultVal });
 	    }
 	}
 	return retval;
@@ -499,8 +484,7 @@ public class Converter {
      * @return The value for the key in the cmdLine, or defaultVal if it's not
      *         there.
      */
-    private double getDoubleOptionValue(CommandLine cmdLine, String key,
-	    double defaultVal) {
+    private double getDoubleOptionValue(CommandLine cmdLine, String key, double defaultVal) {
 	double retval = defaultVal;
 	String optValue = cmdLine.getOptionValue(key);
 
@@ -508,9 +492,8 @@ public class Converter {
 	    try {
 		retval = Double.parseDouble(optValue);
 	    } catch (Exception ex) {
-		LOG.warn(
-			"Option \"{}\" value \"{}\" cannot be converted to double; using {} instead",
-			new Object[] { key, optValue, defaultVal });
+		LOG.warn("Option \"{}\" value \"{}\" cannot be converted to double; using {} instead", new Object[] {
+			key, optValue, defaultVal });
 	    }
 	}
 	return retval;
@@ -546,8 +529,7 @@ public class Converter {
 	int channels = getIntOptionValue(cmdLine, "achannels", 0);
 	int abitrate = getIntOptionValue(cmdLine, "abitrate", 0);
 	int vbitrate = getIntOptionValue(cmdLine, "vbitrate", 0);
-	int vbitratetolerance = getIntOptionValue(cmdLine, "vbitratetolerance",
-		0);
+	int vbitratetolerance = getIntOptionValue(cmdLine, "vbitratetolerance", 0);
 	int vquality = getIntOptionValue(cmdLine, "vquality", -1);
 	int vstream = getIntOptionValue(cmdLine, "vstream", -1);
 	double vscaleFactor = getDoubleOptionValue(cmdLine, "vscalefactor", 1.0);
@@ -584,9 +566,7 @@ public class Converter {
 	     */
 	    retval = iFmt.setInputFormat(icontainerFormat);
 	    if (retval < 0)
-		throw new RuntimeException(
-			"could not find input container format: "
-				+ icontainerFormat);
+		throw new RuntimeException("could not find input container format: " + icontainerFormat);
 	}
 
 	// override the input codec
@@ -596,8 +576,7 @@ public class Converter {
 	     * Looks like they did specify one; let's look it up by name.
 	     */
 	    codec = ICodec.findDecodingCodecByName(iacodec);
-	    if (codec == null
-		    || codec.getType() != ICodec.Type.CODEC_TYPE_AUDIO)
+	    if (codec == null || codec.getType() != ICodec.Type.CODEC_TYPE_AUDIO)
 		throw new RuntimeException("could not find decoder: " + iacodec);
 	    /**
 	     * Now, tell the output stream coder that it's to use that codec.
@@ -618,13 +597,11 @@ public class Converter {
 
 	IMetaData rejectParameters = IMetaData.make();
 
-	retval = mIContainer.open(inputURL, IContainer.Type.READ, iFmt, false,
-		true, parameters, rejectParameters);
+	retval = mIContainer.open(inputURL, IContainer.Type.READ, iFmt, false, true, parameters, rejectParameters);
 	if (retval < 0)
 	    throw new RuntimeException("could not open url: " + inputURL);
 	if (rejectParameters.getNumKeys() > 0)
-	    throw new RuntimeException("some parameters were rejected: "
-		    + rejectParameters);
+	    throw new RuntimeException("some parameters were rejected: " + rejectParameters);
 	/**
 	 * If the user EXPLICITLY asked for a output container format, we'll try
 	 * to honor their request here.
@@ -638,9 +615,7 @@ public class Converter {
 	     */
 	    retval = oFmt.setOutputFormat(containerFormat, outputURL, null);
 	    if (retval < 0)
-		throw new RuntimeException(
-			"could not find output container format: "
-				+ containerFormat);
+		throw new RuntimeException("could not find output container format: " + containerFormat);
 	}
 
 	/**
@@ -650,8 +625,7 @@ public class Converter {
 	 */
 	retval = mOContainer.open(outputURL, IContainer.Type.WRITE, oFmt);
 	if (retval < 0)
-	    throw new RuntimeException("could not open output url: "
-		    + outputURL);
+	    throw new RuntimeException("could not open output url: " + outputURL);
 
 	/**
 	 * Find out how many streams are there in the input container? For
@@ -716,8 +690,7 @@ public class Converter {
 	    mISamples[i] = null;
 	    mOSamples[i] = null;
 
-	    if (cType == ICodec.Type.CODEC_TYPE_AUDIO && mHasAudio
-		    && (astream == -1 || astream == i)) {
+	    if (cType == ICodec.Type.CODEC_TYPE_AUDIO && mHasAudio && (astream == -1 || astream == i)) {
 		/**
 		 * First, did the user specify an audio codec?
 		 */
@@ -729,8 +702,7 @@ public class Converter {
 		     */
 		    codec = ICodec.findEncodingCodecByName(acodec);
 		    if (codec == null || codec.getType() != cType)
-			throw new RuntimeException("could not find encoder: "
-				+ acodec);
+			throw new RuntimeException("could not find encoder: " + acodec);
 
 		} else {
 		    /**
@@ -740,11 +712,9 @@ public class Converter {
 		     * So we ask Xuggler to guess an appropriate output coded
 		     * based on the URL, container format, and that it's audio.
 		     */
-		    codec = ICodec.guessEncodingCodec(oFmt, null, outputURL,
-			    null, cType);
+		    codec = ICodec.guessEncodingCodec(oFmt, null, outputURL, null, cType);
 		    if (codec == null)
-			throw new RuntimeException("could not guess " + cType
-				+ " encoder for: " + outputURL);
+			throw new RuntimeException("could not guess " + cType + " encoder for: " + outputURL);
 		}
 		/**
 		 * So it looks like this stream as an audio stream. Now we add
@@ -830,20 +800,15 @@ public class Converter {
 		 * If they do, we're going to need to resample the input audio
 		 * to be in the right format to output.
 		 */
-		if (oc.getChannels() != ic.getChannels()
-			|| oc.getSampleRate() != ic.getSampleRate()
+		if (oc.getChannels() != ic.getChannels() || oc.getSampleRate() != ic.getSampleRate()
 			|| oc.getSampleFormat() != ic.getSampleFormat()) {
 		    /**
 		     * Create an audio resampler to do that job.
 		     */
-		    mASamplers[i] = IAudioResampler.make(oc.getChannels(),
-			    ic.getChannels(), oc.getSampleRate(),
-			    ic.getSampleRate(), oc.getSampleFormat(),
-			    ic.getSampleFormat());
+		    mASamplers[i] = IAudioResampler.make(oc.getChannels(), ic.getChannels(), oc.getSampleRate(),
+			    ic.getSampleRate(), oc.getSampleFormat(), ic.getSampleFormat());
 		    if (mASamplers[i] == null) {
-			throw new RuntimeException(
-				"could not open audio resampler for stream: "
-					+ i);
+			throw new RuntimeException("could not open audio resampler for stream: " + i);
 		    }
 		} else {
 		    mASamplers[i] = null;
@@ -854,12 +819,9 @@ public class Converter {
 		 * 
 		 * We'll use these repeated during the #run(CommandLine) method.
 		 */
-		mISamples[i] = IAudioSamples.make(1024, ic.getChannels(),
-			ic.getSampleFormat());
-		mOSamples[i] = IAudioSamples.make(1024, oc.getChannels(),
-			oc.getSampleFormat());
-	    } else if (cType == ICodec.Type.CODEC_TYPE_VIDEO && mHasVideo
-		    && (vstream == -1 || vstream == i)) {
+		mISamples[i] = IAudioSamples.make(1024, ic.getChannels(), ic.getSampleFormat());
+		mOSamples[i] = IAudioSamples.make(1024, oc.getChannels(), oc.getSampleFormat());
+	    } else if (cType == ICodec.Type.CODEC_TYPE_VIDEO && mHasVideo && (vstream == -1 || vstream == i)) {
 		/**
 		 * If you're reading these commends, this does the same thing as
 		 * the above branch, only for video. I'm going to assume you
@@ -870,14 +832,11 @@ public class Converter {
 		if (vcodec != null) {
 		    codec = ICodec.findEncodingCodecByName(vcodec);
 		    if (codec == null || codec.getType() != cType)
-			throw new RuntimeException("could not find encoder: "
-				+ vcodec);
+			throw new RuntimeException("could not find encoder: " + vcodec);
 		} else {
-		    codec = ICodec.guessEncodingCodec(oFmt, null, outputURL,
-			    null, cType);
+		    codec = ICodec.guessEncodingCodec(oFmt, null, outputURL, null, cType);
 		    if (codec == null)
-			throw new RuntimeException("could not guess " + cType
-				+ " encoder for: " + outputURL);
+			throw new RuntimeException("could not guess " + cType + " encoder for: " + outputURL);
 
 		}
 		final IStream os = mOContainer.addNewStream(codec);
@@ -909,9 +868,7 @@ public class Converter {
 		int oHeight = ic.getHeight();
 
 		if (oHeight <= 0 || oWidth <= 0)
-		    throw new RuntimeException(
-			    "could not find width or height in url: "
-				    + inputURL);
+		    throw new RuntimeException("could not find width or height in url: " + inputURL);
 
 		/**
 		 * For this program we don't allow the user to specify the pixel
@@ -928,13 +885,10 @@ public class Converter {
 		    oWidth = (int) (oWidth * vscaleFactor);
 		    oHeight = (int) (oHeight * vscaleFactor);
 
-		    mVSamplers[i] = IVideoResampler.make(oWidth, oHeight,
-			    oc.getPixelType(), ic.getWidth(), ic.getHeight(),
-			    ic.getPixelType());
+		    mVSamplers[i] = IVideoResampler.make(oWidth, oHeight, oc.getPixelType(), ic.getWidth(),
+			    ic.getHeight(), ic.getPixelType());
 		    if (mVSamplers[i] == null) {
-			throw new RuntimeException(
-				"This version of Xuggler does not support video resampling "
-					+ i);
+			throw new RuntimeException("This version of Xuggler does not support video resampling " + i);
 		    }
 		} else {
 		    mVSamplers[i] = null;
@@ -965,18 +919,15 @@ public class Converter {
 		IRational num = null;
 		num = ic.getFrameRate();
 		oc.setFrameRate(num);
-		oc.setTimeBase(IRational.make(num.getDenominator(),
-			num.getNumerator()));
+		oc.setTimeBase(IRational.make(num.getDenominator(), num.getNumerator()));
 		num = null;
 
 		/**
 		 * And allocate buffers for us to store decoded and resample
 		 * video pictures.
 		 */
-		mIVideoPictures[i] = IVideoPicture.make(ic.getPixelType(),
-			ic.getWidth(), ic.getHeight());
-		mOVideoPictures[i] = IVideoPicture.make(oc.getPixelType(),
-			oc.getWidth(), oc.getHeight());
+		mIVideoPictures[i] = IVideoPicture.make(ic.getPixelType(), ic.getWidth(), ic.getHeight());
+		mOVideoPictures[i] = IVideoPicture.make(oc.getPixelType(), oc.getWidth(), oc.getHeight());
 	    } else {
 		LOG.warn("Ignoring input stream {} of type {}", i, cType);
 	    }
@@ -994,17 +945,14 @@ public class Converter {
 		retval = mOCoders[i]
 			.setStandardsCompliance(IStreamCoder.CodecStandardsCompliance.COMPLIANCE_EXPERIMENTAL);
 		if (retval < 0)
-		    throw new RuntimeException(
-			    "could not set compliance mode to experimental");
+		    throw new RuntimeException("could not set compliance mode to experimental");
 
 		retval = mOCoders[i].open(null, null);
 		if (retval < 0)
-		    throw new RuntimeException(
-			    "could not open output encoder for stream: " + i);
+		    throw new RuntimeException("could not open output encoder for stream: " + i);
 		retval = mICoders[i].open(null, null);
 		if (retval < 0)
-		    throw new RuntimeException(
-			    "could not open input decoder for stream: " + i);
+		    throw new RuntimeException("could not open input decoder for stream: " + i);
 	    }
 	}
 
@@ -1018,8 +966,7 @@ public class Converter {
 	 */
 	retval = mOContainer.writeHeader();
 	if (retval < 0)
-	    throw new RuntimeException("Could not write header for: "
-		    + outputURL);
+	    throw new RuntimeException("Could not write header for: " + outputURL);
 
 	/**
 	 * That's it with setup; we're good to begin!
@@ -1220,13 +1167,9 @@ public class Converter {
 	     */
 	    IStream stream = mIContainer.getStream(i);
 	    long tsOffset = 0;
-	    if (stream.getStartTime() != Global.NO_PTS
-		    && stream.getStartTime() > 0
-		    && stream.getTimeBase() != null) {
-		IRational defTimeBase = IRational.make(1,
-			(int) Global.DEFAULT_PTS_PER_SECOND);
-		tsOffset = defTimeBase.rescale(stream.getStartTime(),
-			stream.getTimeBase());
+	    if (stream.getStartTime() != Global.NO_PTS && stream.getStartTime() > 0 && stream.getTimeBase() != null) {
+		IRational defTimeBase = IRational.make(1, (int) Global.DEFAULT_PTS_PER_SECOND);
+		tsOffset = defTimeBase.rescale(stream.getStartTime(), stream.getTimeBase());
 	    }
 	    /**
 	     * And look up the appropriate objects that are working on that
@@ -1264,15 +1207,12 @@ public class Converter {
 		while (offset < iPacket.getSize()) {
 		    retval = ic.decodeAudio(inSamples, iPacket, offset);
 		    if (retval <= 0)
-			throw new RuntimeException(
-				"could not decode audio.  stream: " + i);
+			throw new RuntimeException("could not decode audio.  stream: " + i);
 
 		    if (inSamples.getTimeStamp() != Global.NO_PTS)
-			inSamples.setTimeStamp(inSamples.getTimeStamp()
-				- tsOffset);
+			inSamples.setTimeStamp(inSamples.getTimeStamp() - tsOffset);
 
-		    LOG.trace("packet:{}; samples:{}; offset:{}", new Object[] {
-			    iPacket, inSamples, tsOffset });
+		    LOG.trace("packet:{}; samples:{}; offset:{}", new Object[] { iPacket, inSamples, tsOffset });
 
 		    /**
 		     * If not an error, the decodeAudio returns the number of
@@ -1286,8 +1226,7 @@ public class Converter {
 		     * we do that resample now.
 		     */
 		    if (as != null && inSamples.getNumSamples() > 0) {
-			retval = as.resample(reSamples, inSamples,
-				inSamples.getNumSamples());
+			retval = as.resample(reSamples, inSamples, inSamples.getNumSamples());
 
 			outSamples = reSamples;
 		    } else {
@@ -1319,11 +1258,9 @@ public class Converter {
 		     * we have into packets.
 		     */
 		    while (numSamplesConsumed < outSamples.getNumSamples()) {
-			retval = oc.encodeAudio(oPacket, outSamples,
-				numSamplesConsumed);
+			retval = oc.encodeAudio(oPacket, outSamples, numSamplesConsumed);
 			if (retval <= 0)
-			    throw new RuntimeException(
-				    "Could not encode any audio: " + retval);
+			    throw new RuntimeException("Could not encode any audio: " + retval);
 			/**
 			 * Increment the number of samples consumed, so that the
 			 * next time through this loop we encode new audio
@@ -1351,11 +1288,9 @@ public class Converter {
 		while (offset < iPacket.getSize()) {
 		    retval = ic.decodeVideo(inFrame, iPacket, offset);
 		    if (retval <= 0)
-			throw new RuntimeException(
-				"could not decode any video.  stream: " + i);
+			throw new RuntimeException("could not decode any video.  stream: " + i);
 
-		    LOG.trace("decoded vid ts: {}; pkts ts: {}",
-			    inFrame.getTimeStamp(), iPacket.getTimeStamp());
+		    LOG.trace("decoded vid ts: {}; pkts ts: {}", inFrame.getTimeStamp(), iPacket.getTimeStamp());
 		    if (inFrame.getTimeStamp() != Global.NO_PTS)
 			inFrame.setTimeStamp(inFrame.getTimeStamp() - tsOffset);
 
@@ -1364,8 +1299,7 @@ public class Converter {
 			if (vs != null) {
 			    retval = vs.resample(reFrame, inFrame);
 			    if (retval < 0)
-				throw new RuntimeException(
-					"could not resample video");
+				throw new RuntimeException("could not resample video");
 			    outFrame = reFrame;
 			} else {
 			    outFrame = inFrame;
@@ -1432,16 +1366,14 @@ public class Converter {
     private void delayForRealTime(IPacket oPacket) {
 	// convert packet timestamp to microseconds
 	final IRational timeBase = oPacket.getTimeBase();
-	if (timeBase == null || timeBase.getNumerator() == 0
-		|| timeBase.getDenominator() == 0)
+	if (timeBase == null || timeBase.getNumerator() == 0 || timeBase.getDenominator() == 0)
 	    return;
 	long dts = oPacket.getDts();
 	if (dts == Global.NO_PTS)
 	    return;
 
-	final long currStreamTime = IRational.rescale(dts, 1, 1000000,
-		timeBase.getNumerator(), timeBase.getDenominator(),
-		IRational.Rounding.ROUND_NEAR_INF);
+	final long currStreamTime = IRational.rescale(dts, 1, 1000000, timeBase.getNumerator(),
+		timeBase.getDenominator(), IRational.Rounding.ROUND_NEAR_INF);
 	if (mStartStreamTime == null)
 	    mStartStreamTime = currStreamTime;
 

@@ -1,5 +1,6 @@
 package com.att.wifi.camera;
 
+import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 
 public class ImageFileDTO {
@@ -14,7 +15,7 @@ public class ImageFileDTO {
 
     private String filePath;
 
-    private FileChannel fc;
+    private RandomAccessFile raf;
 
     public ImageFileDTO() {
 
@@ -46,12 +47,7 @@ public class ImageFileDTO {
 
     public FileChannel getFc() {
 
-	return fc;
-    }
-
-    public void setFc(FileChannel fc) {
-
-	this.fc = fc;
+	return raf.getChannel();
     }
 
     public boolean isTimeOut() {
@@ -88,8 +84,7 @@ public class ImageFileDTO {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + (int) (createdTime ^ (createdTime >>> 32));
-	result = prime * result
-		+ ((filePath == null) ? 0 : filePath.hashCode());
+	result = prime * result + ((filePath == null) ? 0 : filePath.hashCode());
 	result = prime * result + (int) (position ^ (position >>> 32));
 	result = prime * result + (int) (timeOut ^ (timeOut >>> 32));
 	return result;
@@ -131,6 +126,14 @@ public class ImageFileDTO {
 	return true;
     }
 
+    public RandomAccessFile getRaf() {
+	return raf;
+    }
+
+    public void setRaf(RandomAccessFile raf) {
+	this.raf = raf;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -138,8 +141,7 @@ public class ImageFileDTO {
      */
     @Override
     public String toString() {
-	return "ImageFileDTO [createdTime=" + createdTime + ", timeOut="
-		+ timeOut + ", position=" + position + ", filePath=" + filePath
-		+ "]";
+	return "ImageFileDTO [createdTime=" + createdTime + ", timeOut=" + timeOut + ", position=" + position
+		+ ", filePath=" + filePath + "]";
     }
 }

@@ -8,6 +8,7 @@ dependencies {
 	compile 'org.apache.felix:org.apache.felix.http.jetty:2.2.2'
 	compile 'org.ops4j.pax.web:pax-web-jsp:3.1.0'
 	compile 'org.ops4j.pax.web:pax-web-api:3.1.0'
+	compile 'com.google.guava:guava:17.0'
 
 	compile 'org.slf4j:slf4j-log4j12:1.7.7'
 	compile 'log4j:log4j:1.2.17'

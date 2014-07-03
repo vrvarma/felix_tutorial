@@ -73,8 +73,7 @@ public class MovingBalls implements Balls {
 	// create graphics for the images
 
 	mGraphics = mImage.createGraphics();
-	mGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		RenderingHints.VALUE_ANTIALIAS_ON);
+	mGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 	// create a place to put the audio samples
 
@@ -122,8 +121,8 @@ public class MovingBalls implements Balls {
 	// add audio for each ball
 
 	for (Ball ball : mBalls)
-	    ball.setAudioProgress(addSignal(ball.getFrequency(), sampleRate,
-		    1d / mBalls.size(), ball.getAudioProgress(), mSamples));
+	    ball.setAudioProgress(addSignal(ball.getFrequency(), sampleRate, 1d / mBalls.size(),
+		    ball.getAudioProgress(), mSamples));
 
 	// return new audio samples
 
@@ -150,8 +149,7 @@ public class MovingBalls implements Balls {
      * @return the progress at the end of the sample period
      */
 
-    public static double addSignal(int frequency, int sampleRate,
-	    double volume, double progress, short[] samples) {
+    public static double addSignal(int frequency, int sampleRate, double volume, double progress, short[] samples) {
 	final double amplitude = Short.MAX_VALUE * volume;
 	final double epsilon = ((Math.PI * 2) * frequency) / sampleRate;
 
@@ -219,8 +217,7 @@ public class MovingBalls implements Balls {
 
 	    // set the speed
 
-	    mSpeed = (rnd.nextInt(200) + 100d)
-		    / DEFAULT_TIME_UNIT.convert(1, SECONDS);
+	    mSpeed = (rnd.nextInt(200) + 100d) / DEFAULT_TIME_UNIT.convert(1, SECONDS);
 
 	    // start in the middle
 
@@ -232,8 +229,7 @@ public class MovingBalls implements Balls {
 
 	    // set random color
 
-	    mColor = new Color(rnd.nextInt(256), rnd.nextInt(256),
-		    rnd.nextInt(256));
+	    mColor = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 	}
 
 	// set the auido progress

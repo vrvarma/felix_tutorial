@@ -22,14 +22,12 @@ public class DisplayWebcamVideo {
 
     public static void main(String[] args) {
 	if (args.length != 2) {
-	    throw new IllegalArgumentException(
-		    "must pass in driver and device name");
+	    throw new IllegalArgumentException("must pass in driver and device name");
 	}
 	String driverName = args[0];
 	String deviceName = args[1];
 
-	if (!(IVideoResampler
-		.isSupported(IVideoResampler.Feature.FEATURE_COLORSPACECONVERSION))) {
+	if (!(IVideoResampler.isSupported(IVideoResampler.Feature.FEATURE_COLORSPACECONVERSION))) {
 	    throw new RuntimeException(
 		    "you must install the GPL version of Xuggler (with IVideoResampler support) for this demo to work");
 	}
@@ -38,8 +36,7 @@ public class DisplayWebcamVideo {
 
 	IContainerFormat format = IContainerFormat.make();
 	if (format.setInputFormat(driverName) < 0) {
-	    throw new IllegalArgumentException("couldn't open webcam device: "
-		    + driverName);
+	    throw new IllegalArgumentException("couldn't open webcam device: " + driverName);
 	}
 
 	IMetaData params = IMetaData.make();
@@ -47,13 +44,12 @@ public class DisplayWebcamVideo {
 	params.setValue("framerate", "30/1");
 	params.setValue("video_size", "320x240");
 
-	int retval = container.open(deviceName, IContainer.Type.READ, format,
-		false, true, params, null);
+	int retval = container.open(deviceName, IContainer.Type.READ, format, false, true, params, null);
 
 	if (retval < 0) {
 	    IError error = IError.make(retval);
-	    throw new IllegalArgumentException("could not open file: "
-		    + deviceName + "; Error: " + error.getDescription());
+	    throw new IllegalArgumentException("could not open file: " + deviceName + "; Error: "
+		    + error.getDescription());
 	}
 
 	int numStreams = container.getNumStreams();
@@ -73,25 +69,19 @@ public class DisplayWebcamVideo {
 	}
 
 	if (videoStreamId == -1) {
-	    throw new RuntimeException(
-		    "could not find video stream in container: " + deviceName);
+	    throw new RuntimeException("could not find video stream in container: " + deviceName);
 	}
 
 	if (videoCoder.open() < 0) {
-	    throw new RuntimeException(
-		    "could not open video decoder for container: " + deviceName);
+	    throw new RuntimeException("could not open video decoder for container: " + deviceName);
 	}
 	IVideoResampler resampler = null;
 	if (videoCoder.getPixelType() != IPixelFormat.Type.BGR24) {
-	    resampler = IVideoResampler.make(videoCoder.getWidth(),
-		    videoCoder.getHeight(), IPixelFormat.Type.BGR24,
-		    videoCoder.getWidth(), videoCoder.getHeight(),
-		    videoCoder.getPixelType());
+	    resampler = IVideoResampler.make(videoCoder.getWidth(), videoCoder.getHeight(), IPixelFormat.Type.BGR24,
+		    videoCoder.getWidth(), videoCoder.getHeight(), videoCoder.getPixelType());
 
 	    if (resampler == null) {
-		throw new RuntimeException(
-			"could not create color space resampler for: "
-				+ deviceName);
+		throw new RuntimeException("could not create color space resampler for: " + deviceName);
 	    }
 
 	}
@@ -101,39 +91,30 @@ public class DisplayWebcamVideo {
 	IPacket packet = IPacket.make();
 	while (container.readNextPacket(packet) >= 0) {
 	    if (packet.getStreamIndex() == videoStreamId) {
-		IVideoPicture picture = IVideoPicture.make(
-			videoCoder.getPixelType(), videoCoder.getWidth(),
+		IVideoPicture picture = IVideoPicture.make(videoCoder.getPixelType(), videoCoder.getWidth(),
 			videoCoder.getHeight());
 
 		int offset = 0;
 		while (offset < packet.getSize()) {
-		    int bytesDecoded = videoCoder.decodeVideo(picture, packet,
-			    offset);
+		    int bytesDecoded = videoCoder.decodeVideo(picture, packet, offset);
 		    if (bytesDecoded < 0)
-			throw new RuntimeException(
-				"got error decoding video in: " + deviceName);
+			throw new RuntimeException("got error decoding video in: " + deviceName);
 		    offset += bytesDecoded;
 
 		    if (picture.isComplete()) {
 			IVideoPicture newPic = picture;
 
 			if (resampler != null) {
-			    newPic = IVideoPicture.make(
-				    resampler.getOutputPixelFormat(),
-				    picture.getWidth(), picture.getHeight());
+			    newPic = IVideoPicture.make(resampler.getOutputPixelFormat(), picture.getWidth(),
+				    picture.getHeight());
 			    if (resampler.resample(newPic, picture) < 0)
-				throw new RuntimeException(
-					"could not resample video from: "
-						+ deviceName);
+				throw new RuntimeException("could not resample video from: " + deviceName);
 			}
 			if (newPic.getPixelType() != IPixelFormat.Type.BGR24) {
-			    throw new RuntimeException(
-				    "could not decode video as BGR 24 bit data in: "
-					    + deviceName);
+			    throw new RuntimeException("could not decode video as BGR 24 bit data in: " + deviceName);
 			}
 
-			BufferedImage javaImage = Utils
-				.videoPictureToImage(newPic);
+			BufferedImage javaImage = Utils.videoPictureToImage(newPic);
 
 			updateJavaWindow(javaImage);
 		    }

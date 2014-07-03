@@ -35,7 +35,8 @@ import com.xuggle.xuggler.ICodec.ID;
  */
 public class GetSupportedCodecs {
 
-    private static final Logger LOGGER=LogManager.getLogger(GetSupportedCodecs.class);
+    private static final Logger LOGGER = LogManager.getLogger(GetSupportedCodecs.class);
+
     /**
      * Given the short name of a container, prints out information about it,
      * including which codecs Xuggler can write (mux) into that container.
@@ -54,9 +55,8 @@ public class GetSupportedCodecs {
 	List<ID> codecs = format.getOutputCodecsSupported();
 
 	LOGGER.debug("Container Format: " + format);
-	
-	LOGGER.debug("Total codecs supported: "
-		+ format.getOutputNumCodecsSupported());
+
+	LOGGER.debug("Total codecs supported: " + format.getOutputNumCodecsSupported());
 	LOGGER.debug("Supported Codecs:");
 	for (ID id : codecs) {
 	    if (id != null) {

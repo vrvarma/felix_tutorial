@@ -1,23 +1,20 @@
 package com.att.wifi.camera;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
+//import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 public class VideoThread implements Runnable {
 
-    private static final Logger LOGGER = LogManager
-	    .getLogger(VideoThread.class);
+    private static final Logger LOGGER = LogManager.getLogger(VideoThread.class);
 
     // @Inject
     FileCache fileCache = FileCacheImpl.getInstance();
@@ -43,21 +40,15 @@ public class VideoThread implements Runnable {
 
     }
 
-    private void generateFiles(String ipAddress, String tmpDirectory)
-	    throws IOException {
+    private void generateFiles(String ipAddress, String tmpDirectory) throws IOException {
 
-	String urlString = "http://" + ipAddress + "/img/media.ts";
+	String urlString = "https://" + ipAddress + "/img/media.ts?channel=2";
 
 	while (true) {
 	    try {
 		URLConnection urlConnection = getConnection(urlString);
-		ReadableByteChannel rbc = Channels.newChannel(urlConnection
-			.getInputStream());
 
-		while (true) {
-
-		    fileCache.transferImage(ipAddress, tmpDirectory, rbc);
-		}
+		fileCache.transferImage(ipAddress, tmpDirectory, urlConnection.getInputStream());
 
 	    } catch (Exception e) {
 
@@ -73,26 +64,29 @@ public class VideoThread implements Runnable {
 	urlConnection.setAllowUserInteraction(false);
 	urlConnection.setRequestProperty("Connection", "Keep-Alive");
 
+	String login = System.getProperty("camera.login");
+
+	if (login != null) {
+
+	    String loginPassword = login;
+	    String encoded = new sun.misc.BASE64Encoder().encode(loginPassword.getBytes());
+
+	    urlConnection.setRequestProperty("Authorization", "Basic " + encoded);
+	}
+
 	// LOGGER.info("Expiration  " + urlConnection.getExpiration());
 
 	if (urlConnection instanceof HttpsURLConnection) {
 
-	    LOGGER.debug("trustStore="
-		    + System.getProperty("javax.net.ssl.trustStore"));
-	    LOGGER.debug("trustStorePassword="
-		    + System.getProperty("javax.net.ssl.trustStorePassword"));
-	    LOGGER.debug("trustStoreType="
-		    + System.getProperty("javax.net.ssl.trustStoreType"));
-	    LOGGER.debug("keyStore="
-		    + System.getProperty("javax.net.ssl.keyStore"));
-	    LOGGER.debug("keyStorePassword="
-		    + System.getProperty("javax.net.ssl.keyStorePassword"));
-	    LOGGER.debug("keyStoreType="
-		    + System.getProperty("javax.net.ssl.keyStoreType"));
+	    LOGGER.debug("trustStore=" + System.getProperty("javax.net.ssl.trustStore"));
+	    LOGGER.debug("trustStorePassword=" + System.getProperty("javax.net.ssl.trustStorePassword"));
+	    LOGGER.debug("trustStoreType=" + System.getProperty("javax.net.ssl.trustStoreType"));
+	    LOGGER.debug("keyStore=" + System.getProperty("javax.net.ssl.keyStore"));
+	    LOGGER.debug("keyStorePassword=" + System.getProperty("javax.net.ssl.keyStorePassword"));
+	    LOGGER.debug("keyStoreType=" + System.getProperty("javax.net.ssl.keyStoreType"));
 
 	    HttpsURLConnection sslConnection = (HttpsURLConnection) urlConnection;
-	    sslConnection.setSSLSocketFactory(HttpsURLConnection
-		    .getDefaultSSLSocketFactory());
+	    sslConnection.setSSLSocketFactory(HttpsURLConnection.getDefaultSSLSocketFactory());
 	}
 	urlConnection.connect();
 	for (int j = 1;; j++) {
@@ -100,8 +94,7 @@ public class VideoThread implements Runnable {
 	    if (header == null) {
 		break;
 	    }
-	    LOGGER.info("Header " + urlConnection.getHeaderFieldKey(j) + " "
-		    + header);
+	    LOGGER.info("Header " + urlConnection.getHeaderFieldKey(j) + " " + header);
 	}
 
 	return urlConnection;

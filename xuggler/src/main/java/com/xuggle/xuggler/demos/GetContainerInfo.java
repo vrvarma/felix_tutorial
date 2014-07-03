@@ -52,8 +52,7 @@ public class GetContainerInfo {
 	}
 
 	if (args.length <= 0)
-	    throw new IllegalArgumentException(
-		    "must pass in a filename as the first argument");
+	    throw new IllegalArgumentException("must pass in a filename as the first argument");
 
 	String filename = args[0];
 	// Create a Xuggler container object
@@ -61,19 +60,15 @@ public class GetContainerInfo {
 
 	// Open up the container
 	if (container.open(filename, IContainer.Type.READ, null) < 0)
-	    throw new IllegalArgumentException("could not open file: "
-		    + filename);
+	    throw new IllegalArgumentException("could not open file: " + filename);
 
 	// query how many streams the call to open found
 	int numStreams = container.getNumStreams();
-	System.out.printf("file \"%s\": %d stream%s; ", filename, numStreams,
-		numStreams == 1 ? "" : "s");
+	System.out.printf("file \"%s\": %d stream%s; ", filename, numStreams, numStreams == 1 ? "" : "s");
 	System.out.printf("duration (ms): %s; ",
-		container.getDuration() == Global.NO_PTS ? "unknown" : ""
-			+ container.getDuration() / 1000);
-	System.out.printf("start time (ms): %s; ",
-		container.getStartTime() == Global.NO_PTS ? "unknown" : ""
-			+ container.getStartTime() / 1000);
+		container.getDuration() == Global.NO_PTS ? "unknown" : "" + container.getDuration() / 1000);
+	System.out.printf("start time (ms): %s; ", container.getStartTime() == Global.NO_PTS ? "unknown" : ""
+		+ container.getStartTime() / 1000);
 	System.out.printf("file size (bytes): %d; ", container.getFileSize());
 	System.out.printf("bit rate: %d; ", container.getBitRate());
 	System.out.printf("\n");
@@ -90,19 +85,14 @@ public class GetContainerInfo {
 	    System.out.printf("type: %s; ", coder.getCodecType());
 	    System.out.printf("codec: %s; ", coder.getCodecID());
 	    System.out.printf("duration: %s; ",
-		    stream.getDuration() == Global.NO_PTS ? "unknown" : ""
-			    + stream.getDuration());
+		    stream.getDuration() == Global.NO_PTS ? "unknown" : "" + stream.getDuration());
 	    System.out.printf("start time: %s; ",
-		    container.getStartTime() == Global.NO_PTS ? "unknown" : ""
-			    + stream.getStartTime());
-	    System.out.printf(
-		    "language: %s; ",
-		    stream.getLanguage() == null ? "unknown" : stream
-			    .getLanguage());
-	    System.out.printf("timebase: %d/%d; ", stream.getTimeBase()
-		    .getNumerator(), stream.getTimeBase().getDenominator());
-	    System.out.printf("coder tb: %d/%d; ", coder.getTimeBase()
-		    .getNumerator(), coder.getTimeBase().getDenominator());
+		    container.getStartTime() == Global.NO_PTS ? "unknown" : "" + stream.getStartTime());
+	    System.out.printf("language: %s; ", stream.getLanguage() == null ? "unknown" : stream.getLanguage());
+	    System.out.printf("timebase: %d/%d; ", stream.getTimeBase().getNumerator(), stream.getTimeBase()
+		    .getDenominator());
+	    System.out.printf("coder tb: %d/%d; ", coder.getTimeBase().getNumerator(), coder.getTimeBase()
+		    .getDenominator());
 
 	    if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_AUDIO) {
 		System.out.printf("sample rate: %d; ", coder.getSampleRate());
@@ -112,8 +102,7 @@ public class GetContainerInfo {
 		System.out.printf("width: %d; ", coder.getWidth());
 		System.out.printf("height: %d; ", coder.getHeight());
 		System.out.printf("format: %s; ", coder.getPixelType());
-		System.out.printf("frame-rate: %5.2f; ", coder.getFrameRate()
-			.getDouble());
+		System.out.printf("frame-rate: %5.2f; ", coder.getFrameRate().getDouble());
 	    }
 	    System.out.printf("\n");
 	}

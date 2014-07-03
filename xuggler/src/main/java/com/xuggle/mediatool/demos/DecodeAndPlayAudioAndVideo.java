@@ -43,8 +43,7 @@ public class DecodeAndPlayAudioAndVideo extends MediaListenerAdapter {
 
     public static void main(String[] args) {
 	if (args.length <= 0)
-	    throw new IllegalArgumentException(
-		    "must pass in a filename as the first argument");
+	    throw new IllegalArgumentException("must pass in a filename as the first argument");
 
 	// create a new mr. decode an play audio and video
 	IMediaReader reader = ToolFactory.makeReader(args[0]);

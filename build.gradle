@@ -4,8 +4,12 @@ apply plugin :'base'
 // In this section you declare where to find the dependencies of your project
 allprojects {
     repositories {
+	
 	mavenCentral()
 	maven{ url 'http://xuggle.googlecode.com/svn/trunk/repo/share/java' }
+	maven{ url 'http://ipagbld05.snt.bst.bls.com:5125/nexus/content/groups/public' }
+	
+
 
     } }
 

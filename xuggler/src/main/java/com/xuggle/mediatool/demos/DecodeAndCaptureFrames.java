@@ -43,9 +43,8 @@ import com.xuggle.xuggler.Global;
  */
 
 public class DecodeAndCaptureFrames extends MediaListenerAdapter {
-    
-    
-    private static final Logger LOGGER=LogManager.getLogger(DecodeAndCaptureFrames.class);
+
+    private static final Logger LOGGER = LogManager.getLogger(DecodeAndCaptureFrames.class);
     /**
      * The number of seconds between frames.
      */
@@ -79,8 +78,7 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
 
     public static void main(String[] args) {
 	if (args.length <= 0)
-	    throw new IllegalArgumentException(
-		    "must pass in a filename as the first argument");
+	    throw new IllegalArgumentException("must pass in a filename as the first argument");
 
 	// create a new mr. decode and capture frames
 
@@ -154,8 +152,7 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
 	    // first frame
 
 	    if (mLastPtsWrite == Global.NO_PTS)
-		mLastPtsWrite = event.getTimeStamp()
-			- MICRO_SECONDS_BETWEEN_FRAMES;
+		mLastPtsWrite = event.getTimeStamp() - MICRO_SECONDS_BETWEEN_FRAMES;
 
 	    // if it's time to write the next frame
 
@@ -170,18 +167,15 @@ public class DecodeAndCaptureFrames extends MediaListenerAdapter {
 
 		// indicate file written
 
-		double seconds = ((double) event.getTimeStamp())
-			/ Global.DEFAULT_PTS_PER_SECOND;
-		System.out.printf(
-			"at elapsed time of %6.3f seconds wrote: %s\n",
-			seconds, file);
+		double seconds = ((double) event.getTimeStamp()) / Global.DEFAULT_PTS_PER_SECOND;
+		System.out.printf("at elapsed time of %6.3f seconds wrote: %s\n", seconds, file);
 
 		// update last write time
 
 		mLastPtsWrite += MICRO_SECONDS_BETWEEN_FRAMES;
 	    }
 	} catch (Exception e) {
-	    LOGGER.error("Exception Thrown --> ",e);
+	    LOGGER.error("Exception Thrown --> ", e);
 	}
     }
 }

@@ -11,7 +11,7 @@ public class URLConnectionReader {
 	try {
 	    FileUtils.deleteDir(new File(tmpDirectory));
 	} catch (Exception e) {
-	    //Need to add a log
+	    // Need to add a log
 	}
 
 	for (int i = 1; i < args.length; i++) {

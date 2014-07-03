@@ -11,6 +11,8 @@ dependencies {
 	compile 'com.google.guava:guava:17.0'
 	compile 'org.apache.httpcomponents:httpclient:4.3.4'
 	
+	compile 'org.apache.httpcomponents:httpasyncclient:4.0.1'
+	
 //	compile 'xuggle:xuggle-utils:1.22'
 //	compile 'xuggle:xuggle-xuggler-red5:3.1.875.200908131110'
 	
@@ -24,3 +26,12 @@ dependencies {
 jar{
     archiveName='urlstreamer.jar'
 }
+
+task copyDependentLibs(type:Copy,overwrite:true){
+    def deps=configurations.runtime
+
+    into ("c:/felix_tutorial/jsp_dep_lib")
+    from deps
+}
+
+build.dependsOn copyDependentLibs

@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 public final class FileUtils {
 
-    private static final Logger LOGGER=LogManager.getLogger(FileUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(FileUtils.class);
     private static final int MAX_NUMBER_INDEX = 3;
     private static final String POST_FIX = ".ts";
 
@@ -18,12 +18,10 @@ public final class FileUtils {
 	return new File(directory, fileName + POST_FIX);
     }
 
-    public static File getTemperoryFile(String directory, String fileName)
-	    throws IOException {
+    public static File getTemperoryFile(String directory, String fileName) throws IOException {
 
-	File file = File
-		.createTempFile(fileName, POST_FIX, new File(directory));
-	//file.deleteOnExit();
+	File file = File.createTempFile(fileName, POST_FIX, new File(directory));
+	// file.deleteOnExit();
 	return file;
 
     }
@@ -51,8 +49,7 @@ public final class FileUtils {
 		if (file.exists()) {
 
 		    target = getFile(directory, fileName + "_" + (i + 1));
-		    LOGGER.debug("Renaming file " + file + " to "
-			    + target);
+		    LOGGER.debug("Renaming file " + file + " to " + target);
 		    renameSucceeded = file.renameTo(target);
 		}
 	    }
@@ -106,7 +103,7 @@ public final class FileUtils {
     // });
     //
     // }
-    
+
     public static boolean deleteDir(File dir) throws IOException {
 
 	if (dir.isDirectory()) {
