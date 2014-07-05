@@ -20,7 +20,8 @@ import org.apache.log4j.Logger;
 
 public class StreamingThread implements Runnable {
 
-    private static final Logger LOGGER = LogManager.getLogger(StreamingThread.class);
+    private static final Logger LOGGER = LogManager
+	    .getLogger(StreamingThread.class);
 
     // @Inject
     private static FileCache fileCache = FileCacheImpl.getInstance();
@@ -52,38 +53,47 @@ public class StreamingThread implements Runnable {
 	    CloseableHttpClient httpclient = getHttpClient();
 
 	    try {
-		HttpGet httpget = new HttpGet("https://" + hostName + "/img/media.ts?channel=2");
+		HttpGet httpget = new HttpGet("https://" + hostName
+			+ "/img/media.ts?channel=2");
 
 		LOGGER.debug("Executing request " + httpget.getRequestLine());
 		CloseableHttpResponse response = httpclient.execute(httpget);
 		try {
 
-		    fileCache.transferImage(hostName, tmpDir, response.getEntity().getContent());
+		    fileCache.transferImage(hostName, tmpDir, response
+			    .getEntity().getContent());
 
 		} finally {
 		    response.close();
 		}
+	    } catch (Exception e) {
+
+		LOGGER.error("Exception Thrown --> ", e);
 	    } finally {
 		httpclient.close();
 	    }
+
 	}
     }
 
-    private CloseableHttpClient getHttpClient() throws NoSuchAlgorithmException, KeyManagementException {
+    private CloseableHttpClient getHttpClient()
+	    throws NoSuchAlgorithmException, KeyManagementException {
 
 	String[] loginInfo = System.getProperty("camera.login").split(":");
 
 	CredentialsProvider credsProvider = new BasicCredentialsProvider();
-	credsProvider.setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
-		new UsernamePasswordCredentials(loginInfo[0], loginInfo[1]));
+	credsProvider.setCredentials(new AuthScope(AuthScope.ANY_HOST,
+		AuthScope.ANY_PORT), new UsernamePasswordCredentials(
+		loginInfo[0], loginInfo[1]));
 
 	SSLContext sslContext = SSLContexts.custom().useTLS()
 	// .loadTrustMaterial(ks)
 		.build();
 
-	CloseableHttpClient httpclient = HttpClients.custom().setSslcontext(sslContext)
-		.setDefaultCredentialsProvider(credsProvider).setHostnameVerifier(new AllowAllHostnameVerifier())
-		.build();
+	CloseableHttpClient httpclient = HttpClients.custom()
+		.setSslcontext(sslContext)
+		.setDefaultCredentialsProvider(credsProvider)
+		.setHostnameVerifier(new AllowAllHostnameVerifier()).build();
 	return httpclient;
     }
 }
