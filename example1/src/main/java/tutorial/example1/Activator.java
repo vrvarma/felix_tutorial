@@ -1,9 +1,11 @@
 package tutorial.example1;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
 
 /**
  * This class implements a simple bundle that utilizes the OSGi
@@ -12,6 +14,7 @@ import org.osgi.framework.ServiceEvent;
 **/
 public class Activator implements BundleActivator, ServiceListener
 {
+    private static final Logger LOGGER = LogManager.getLogger(Activator.class);
     /**
      * Implements BundleActivator.start(). Prints
      * a message and adds itself to the bundle context as a service

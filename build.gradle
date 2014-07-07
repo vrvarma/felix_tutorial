@@ -23,6 +23,7 @@ subprojects{ subproject->
 
 	testCompile "junit:junit:4.11"
 	compile 'org.apache.felix:org.apache.felix.framework:4.4.0'
+	compile 'log4j:log4j:1.2.17'
     }
 }
 

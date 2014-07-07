@@ -3,6 +3,8 @@ package tutorial.example4;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -30,6 +32,7 @@ import tutorial.example2.service.DictionaryService;
 **/
 public class Activator implements BundleActivator, ServiceListener
 {
+    private static final Logger LOGGER = LogManager.getLogger(Activator.class);
     // Bundle's context.
     private BundleContext m_context = null;
     // The service reference being used.

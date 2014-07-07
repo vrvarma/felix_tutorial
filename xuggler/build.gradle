@@ -17,7 +17,7 @@ dependencies {
 //	compile 'xuggle:xuggle-xuggler-red5:3.1.875.200908131110'
 	
 	compile 'uk.co.caprica:vlcj:3.0.1'
-	compile 'log4j:log4j:1.2.17'
+	
 	compile 'com.goebl:david-webb:1.1.0'
 	
 }

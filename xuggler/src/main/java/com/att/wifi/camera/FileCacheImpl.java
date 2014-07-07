@@ -25,11 +25,13 @@ public class FileCacheImpl implements FileCache {
 
     private static final int MAX_FILE_SIZE = 10 * 1024;
 
-    private static final Logger LOGGER = LogManager.getLogger(FileCacheImpl.class);
+    private static final Logger LOGGER = LogManager
+	    .getLogger(FileCacheImpl.class);
 
     private static Map<String, ImageFileDTO> fileChannelMap = new HashMap<String, ImageFileDTO>();
 
-    ListMultimap<String, ImageFileDTO> imageFileCache = LinkedListMultimap.create();
+    ListMultimap<String, ImageFileDTO> imageFileCache = LinkedListMultimap
+	    .create();
     private static FileCache instance = new FileCacheImpl();
 
     private FileCacheImpl() {
@@ -41,11 +43,12 @@ public class FileCacheImpl implements FileCache {
     }
 
     @Override
-    public void transferImage(String fileName, String tmpDirectory, InputStream inputStream) throws IOException {
+    public void transferImage(String fileName, String tmpDirectory,
+	    InputStream inputStream) throws IOException {
 
 	ReadableByteChannel rbc = Channels.newChannel(inputStream);
 	while (true) {
-	    
+
 	    ImageFileDTO dto = getFileCache(tmpDirectory, fileName);
 	    try {
 		FileChannel fc = dto.getFc();
@@ -70,7 +73,8 @@ public class FileCacheImpl implements FileCache {
 
     }
 
-    private ImageFileDTO getFileCache(String tmpDirectory, String fileName) throws IOException {
+    private synchronized ImageFileDTO getFileCache(String tmpDirectory,
+	    String fileName) throws IOException {
 
 	ImageFileDTO dto = fileChannelMap.get(fileName);
 	if (dto == null) {
@@ -100,7 +104,8 @@ public class FileCacheImpl implements FileCache {
 
     private void cleanupTempFiles(String fileName) throws IOException {
 
-	List<ImageFileDTO> fileList = new CopyOnWriteArrayList<ImageFileDTO>(imageFileCache.get(fileName));
+	List<ImageFileDTO> fileList = new CopyOnWriteArrayList<ImageFileDTO>(
+		imageFileCache.get(fileName));
 
 	long currentTime = System.currentTimeMillis();
 
@@ -119,7 +124,8 @@ public class FileCacheImpl implements FileCache {
 
     }
 
-    private ImageFileDTO populateFileCacheObject(String tmpDirectory, String fileName) throws IOException {
+    private ImageFileDTO populateFileCacheObject(String tmpDirectory,
+	    String fileName) throws IOException {
 
 	new File(tmpDirectory).mkdir();
 	File file = FileUtils.getTemperoryFile(tmpDirectory, fileName);

@@ -7,6 +7,8 @@ package tutorial.example7;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -23,6 +25,7 @@ import tutorial.example6.service.SpellChecker;
  * checking again you must stop and then restart the bundle.
  **/
 public class Activator implements BundleActivator {
+    private static final Logger LOGGER = LogManager.getLogger(Activator.class);
 	// Bundle's context.
 	private BundleContext m_context = null;
 	// The service tacker object.

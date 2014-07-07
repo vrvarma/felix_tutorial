@@ -1,6 +1,8 @@
 package examples.guice.servlet.osgi.internal;
 
 import org.apache.felix.http.api.ExtHttpService;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.ops4j.peaberry.Peaberry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -14,6 +16,7 @@ import com.google.inject.servlet.GuiceFilter;
  * See http://svn.apache.org/repos/asf/felix/trunk/http/samples/filter/src/main/java/org/apache/felix/http/samples/filter/Activator.java
  */
 public class ExampleActivator implements BundleActivator {
+    private static final Logger LOGGER = LogManager.getLogger(ExampleActivator.class);
 	private ServiceTracker tracker;
 
 	private GuiceFilter guiceFilter;

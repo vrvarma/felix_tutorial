@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -24,6 +26,7 @@ import tutorial.example2.service.DictionaryService;
 **/
 public class Activator implements BundleActivator
 {
+    private static final Logger LOGGER = LogManager.getLogger(Activator.class);
     /**
      * Implements BundleActivator.start(). Queries for
      * all available dictionary services. If none are found it
