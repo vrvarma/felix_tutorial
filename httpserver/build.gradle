@@ -1,0 +1,9 @@
+
+dependencies {
+    
+    compile 'org.glassfish.grizzly:grizzly-http:2.3.16'
+    compile 'org.glassfish.grizzly.samples:grizzly-http-server-samples:2.3.16'
+	compile 'log4j:log4j:1.2.17'
+	
+	
+}
