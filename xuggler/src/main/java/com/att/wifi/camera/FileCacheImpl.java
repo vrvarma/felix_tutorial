@@ -7,7 +7,6 @@ import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import com.google.common.collect.ListMultimap;
 
 public class FileCacheImpl implements FileCache {
 
-    private static final long FILECACHE_TIMEOUT = 3 * 60000;
+    private static final long FILECACHE_TIMEOUT = 60000;
 
     private static final int MAX_FILE_SIZE = 10 * 1024;
 
@@ -73,28 +72,39 @@ public class FileCacheImpl implements FileCache {
 
     }
 
-    private synchronized ImageFileDTO getFileCache(String tmpDirectory,
-	    String fileName) throws IOException {
+    private ImageFileDTO getFileCache(String tmpDirectory, String fileName)
+	    throws IOException {
 
-	ImageFileDTO dto = fileChannelMap.get(fileName);
+	ImageFileDTO dto = null;
+
+	synchronized (this) {
+	    dto = fileChannelMap.get(fileName);
+	}
 	if (dto == null) {
 
 	    dto = populateFileCacheObject(tmpDirectory, fileName);
-	    fileChannelMap.put(fileName, dto);
+	    synchronized (this) {
+		fileChannelMap.put(fileName, dto);
+	    }
 
 	} else if (dto.isTimeOut()) {
 
-	    dto.getRaf().close();
-	    dto.setRaf(null);
-	    fileChannelMap.remove(fileName);
+	    if (dto.getRaf() != null) {
 
-	    imageFileCache.put(fileName, dto);
-	    cleanupTempFiles(fileName);
-	    // FileUtils.rollOver(tmpDirectory, fileName);
-	    dto = populateFileCacheObject(tmpDirectory, fileName);
+		dto.getRaf().close();
+		dto.setRaf(null);
+	    }
+	    synchronized (this) {
 
-	    fileChannelMap.put(fileName, dto);
-	    LOGGER.debug("FileChannel Map -> " + fileChannelMap);
+		fileChannelMap.remove(fileName);
+		imageFileCache.put(fileName, dto);
+		cleanupTempFiles(fileName);
+		// FileUtils.rollOver(tmpDirectory, fileName);
+
+		dto = populateFileCacheObject(tmpDirectory, fileName);
+		fileChannelMap.put(fileName, dto);
+		// LOGGER.debug("FileChannel Map -> " + fileChannelMap);
+	    }
 
 	}
 
@@ -113,21 +123,20 @@ public class FileCacheImpl implements FileCache {
 
 	    if (currentTime > image.getTimeOut() + FILECACHE_TIMEOUT) {
 
-		LOGGER.debug("Removing " + image.getFilePath());
-		Files.deleteIfExists(new File(image.getFilePath()).toPath());
+		LOGGER.debug("Removing Cache" + image.getFilePath());
+		// Files.deleteIfExists(new File(image.getFilePath()).toPath());
 		imageFileCache.remove(fileName, image);
 	    }
 
 	}
 
-	LOGGER.debug("ImageFile Cache -->> " + imageFileCache);
+	// LOGGER.debug("ImageFile Cache -->> " + imageFileCache);
 
     }
 
     private ImageFileDTO populateFileCacheObject(String tmpDirectory,
 	    String fileName) throws IOException {
 
-	new File(tmpDirectory).mkdir();
 	File file = FileUtils.getTemperoryFile(tmpDirectory, fileName);
 
 	// File file = FileUtils.getFile(tmpDirectory, fileName);

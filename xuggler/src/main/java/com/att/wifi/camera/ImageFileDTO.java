@@ -5,7 +5,7 @@ import java.nio.channels.FileChannel;
 
 public class ImageFileDTO {
 
-    private static final int TIMEOUT_MILLISECONDS = 30000;
+    private static final int TIMEOUT_MILLISECONDS = 10000;
 
     private long createdTime;
 
